@@ -1,10 +1,6 @@
-import { useState } from "react";
-
-function NewsPage() {
-    const [activeTab, setActiveTab] = useState('main');
-  
-    return (
-      <div className="news-page">
+function BoardPage() {
+    return(
+        <div className="news-page">
         <header className="header">
         {/* 토글 */}
           <nav className="nav-bar">
@@ -26,18 +22,25 @@ function NewsPage() {
         {/* 검색창 */}
         <main className="main-content">
           <div className="search-bar">
-            <input type="text" placeholder="관심 종목을 입력해 주세요" className="search-input" />
+            <input type="text" placeholder="게시물을 검색해 주세요" className="search-input" />
             <button className="search-button">🔍</button>
           </div>
+          
+        {/* 게시글 작성 버튼 */}
+        <div className="board-btn">
+          <button className="board-button">게시글작성</button>
+        </div>
 
-        {/* 뉴스 그리드 화면 */}
-          <div className="news-grid">
-            <div className="news-item highlight">
-              <img src="" alt="뉴스 이미지" className="news-image" />
-              <div className="news-info">
-                <h3>뉴스이름</h3>
-                <p>뉴스 내용..</p>
-                <span>시간 | 신문사</span>
+        {/* 게시물 그리드 화면 */}
+          <div className="board-grid">
+            <div className="board-item highlight">
+              <img src="" alt="게시물 이미지" className="board-image" />
+              <div className="board-info">
+                <h3>게시글 제목</h3>
+                <img src="" alt="사용자 이미지" className="user-image" />
+                <p>사용자이름</p>
+                <span>년도월일</span>
+                {/* 좋아요수, 댓글수 추가 */}
               </div>
             </div>
           </div>
@@ -54,6 +57,5 @@ function NewsPage() {
         </aside>
       </div>
     );
-  }
-
-export default NewsPage;
+}
+export default BoardPage;
