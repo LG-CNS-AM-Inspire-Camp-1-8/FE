@@ -6,7 +6,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   return (
     <Container>
-      <Logo>NewsTickr</Logo>
+      <Logo>📈 NewsTickr</Logo>
       <LoginBox>
         <Title>뉴스티커로 로그인</Title>
         <Box>
@@ -47,10 +47,10 @@ const Container = styled.div`
 `;
 
 const Logo = styled.h1`
-  font-size: 24px;
+  font-size: 44px;
   font-weight: bold;
   color: #222;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
 `;
 
 const LoginBox = styled.div`
@@ -65,7 +65,7 @@ const LoginBox = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: 25px;
   color: #333;
 `;
 
@@ -82,7 +82,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 93%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -101,17 +101,17 @@ const LoginBtn = styled.button`
   transition: 0.3s;
 
   &:hover {
-    background-color: #d95d50;
+    background-color: #b90000;
   }
 `;
 
 const SignUp = styled.p`
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 14px;
   color: #555;
 
   a {
-    color: #cd0000;
+    color: #eb3232;
     text-decoration: none;
     font-weight: bold;
 
