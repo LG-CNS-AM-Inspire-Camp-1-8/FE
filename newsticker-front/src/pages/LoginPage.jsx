@@ -4,6 +4,7 @@ import styled from "styled-components";
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   return (
     <Container>
       <Logo>📈 NewsTickr</Logo>
