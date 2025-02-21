@@ -1,31 +1,29 @@
 import styled from "styled-components";
-import account from "../assets/icons/Account.png";
+import news from "../assets/icons/news.png";
 
-function BoardDetailPage() {
+function NewsDetailPage() {
   return (
     <Container>
       <InfoBox>
-        <Title>게시글 제목입니다 게시글 제목입니다</Title>
+        <Title>[단독] 삼성전자 2년 연속 법인세 0원</Title>
         <Info>
-          <UserInfo>
-            <img src={account} alt="사용자 아이콘" />
-            <span>사용자 이름</span>
+          <NewsInfo>
+            <img src={news} alt="뉴스 아이콘" />
+            <span>이투데이</span>
             <span>2025년 02월 17일 17:00</span>
-          </UserInfo>
-          <Stats>
-            <span>💬 3</span>
-          </Stats>
+          </NewsInfo>
+          <WriteBtn>게시글 작성 ✍️</WriteBtn>
         </Info>
       </InfoBox>
       <Judgement>감정 분석 결과 !</Judgement>
 
       <Label>기사 본문 요약 📝</Label>
       <Summary>본문 요약 내용</Summary>
-      <Contents>게시글 내용</Contents>
+      <Contents>기사 본문</Contents>
     </Container>
   );
 }
-export default BoardDetailPage;
+export default NewsDetailPage;
 
 const Container = styled.div`
   max-width: 800px;
@@ -52,27 +50,18 @@ const Info = styled.div`
   align-items: center;
 `;
 
-const UserInfo = styled.div`
+const NewsInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
 
   img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 30px;
+    height: 30px;
   }
 
   span {
     font-size: 14px;
-    color: #555;
-  }
-`;
-
-const Stats = styled.div`
-  display: flex;
-  span {
-    font-size: 18px;
     color: #555;
   }
 `;
@@ -114,3 +103,5 @@ const Contents = styled.div`
   color: #333;
   line-height: 1.6;
 `;
+
+const WriteBtn = styled.button``;
