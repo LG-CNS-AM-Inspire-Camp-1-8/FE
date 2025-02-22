@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import NavBar from "../components/NavBar";
 import NewsDetailModal from "../components/NewsDetailModal";
 import '../styles/NewsPage.css'
 
 function NewsPage() {
   const [selectedNews, setSelectedNews] = useState(null);
-  const location = useLocation();
   const newsList = [
     { id: 1, title: '뉴스 제목1', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'매일경제'},
     { id: 2, title: '뉴스 제목2', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'아주경제'},
@@ -15,28 +15,7 @@ function NewsPage() {
   ];
     return(
         <div className="news-page">
-          <header className="news-header">
-            <div className="logo">NewsTickr</div>
-
-            <div className="header-center">
-              <nav className="nav-toggle">
-                <button className={location.pathname === '/' ? "active" : ""}>뉴스페이지</button>
-                <Link to="/boardPage">
-                <button className={location.pathname === "/boardPage" ? "active" : ""}>게시글 목록</button>
-                </Link>
-              </nav>
-              <div className="search-bar">
-                <span className="search-icon">🔍</span>
-                <input type="text" placeholder=" / 를 눌러 검색하세요" className="search-input"/>
-              </div>
-            </div>
-
-            <Link to ="/login">
-              <button className="login-btn">로그인</button>
-            </Link>
-          </header>
-
-
+          <NavBar />
 
           <div className="news-list">
             {newsList.map((news) => (
