@@ -74,38 +74,3 @@
   .search-icon {
     color: #a0a0a0;
   }
-  
-  .news-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 70%;
-    margin: 0 auto;
-  }
-
-  .news-item {
-    background: #f5f5f5;
-    padding: 18px;
-    border-radius: 15px;
-    cursor: pointer;
-  }
-  .news-item .title{
-    color: #333d4b;
-    font-size: 18px;
-  }
-  .news-item .news-content{
-    color: #6b7684;
-    font-size: 14px;
-  }
-  .content-center{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 10px;
-    font-size: 12px;
-  }
-
-
-  
-  
-  

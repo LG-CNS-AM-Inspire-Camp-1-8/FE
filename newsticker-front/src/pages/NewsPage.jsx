@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
 import NavBar from "../components/NavBar";
 import NewsDetailModal from "../components/NewsDetailModal";
-import '../styles/NewsPage.css'
+import '../styles/Page.css'
 
 function NewsPage() {
   const [selectedNews, setSelectedNews] = useState(null);
@@ -16,20 +15,20 @@ function NewsPage() {
     return(
         <div className="news-page">
           <NavBar />
-
-          <div className="news-list">
+          <div className="list">
+            <h2>주요뉴스</h2>
             {newsList.map((news) => (
-            <div key={news.id} className="news-item" onClick={() => setSelectedNews(news)}>
+            <div key={news.id} className="item" onClick={() => setSelectedNews(news)}>
               
               <div className="sub-header">
                 <span className="title">{news.title}</span>
               </div>
 
-              <h2 className="news-content">{news.content}</h2>
+              <h2 className="content">{news.content}</h2>
 
               <div className="content-center">
-              <p className="news-date">{news.date}</p>
-              <span className="newspaper">{news.newspaper}</span>
+              <p className="date">{news.date}</p>
+              <span className="user">{news.newspaper}</span>
               </div>
 
           </div>

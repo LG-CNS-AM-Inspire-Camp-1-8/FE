@@ -1,5 +1,6 @@
 import { useState } from "react";
-import '../styles/NewsDetailModal.css'
+import '../styles/Modal.css';
+
 function NewsDetailModal({news,onClose}) {
     if (!news) return null
     return(
