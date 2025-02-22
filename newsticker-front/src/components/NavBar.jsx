@@ -16,6 +16,9 @@ function NavBar() {
             <Link to="/boardPage">
               <button className={location.pathname === "/boardPage" ? "active" : ""}>게시글 목록</button>
             </Link>
+            <Link to="/mypage">
+              <button className={location.pathname === "/mypage" ? "active" : ""}>마이페이지</button>
+            </Link>
           </nav>
           <div className="search-bar">
             <span className="search-icon">🔍</span>
