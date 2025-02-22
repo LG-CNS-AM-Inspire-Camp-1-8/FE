@@ -1,59 +1,63 @@
 import { useState } from "react";
+import { Link, useLocation } from 'react-router-dom';
+import NewsDetailModal from "../components/NewsDetailModal";
+import '../styles/NewsPage.css'
 
 function NewsPage() {
-    const [activeTab, setActiveTab] = useState('main');
-  
-    return (
-      <div className="news-page">
-        <header className="header">
-        {/* 토글 */}
-          <nav className="nav-bar">
-            <button
-              className={`nav-button ${activeTab === 'main' ? 'active' : ''}`}
-              onClick={() => setActiveTab('main')}
-            >
-              메인페이지
-            </button>
-            <button
-              className={`nav-button ${activeTab === 'posts' ? 'active' : ''}`}
-              onClick={() => setActiveTab('posts')}
-            >
-              게시글 목록
-            </button>
-          </nav>
-        </header>
+  const [selectedNews, setSelectedNews] = useState(null);
+  const location = useLocation();
+  const newsList = [
+    { id: 1, title: '뉴스 제목1', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'매일경제'},
+    { id: 2, title: '뉴스 제목2', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'아주경제'},
+    { id: 3, title: '뉴스 제목3', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'매일경제'},
+    { id: 4, title: '뉴스 제목4', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'매일경제'},
+    { id: 5, title: '뉴스 제목5', content: '삼성전자 최고 ...', date: '2025년 2월 19일', newspaper:'매일경제'}
+  ];
+    return(
+        <div className="news-page">
+          <header className="news-header">
+            <div className="logo">NewsTickr</div>
 
-        {/* 검색창 */}
-        <main className="main-content">
-          <div className="search-bar">
-            <input type="text" placeholder="관심 종목을 입력해 주세요" className="search-input" />
-            <button className="search-button">🔍</button>
-          </div>
-
-        {/* 뉴스 그리드 화면 */}
-          <div className="news-grid">
-            <div className="news-item highlight">
-              <img src="" alt="뉴스 이미지" className="news-image" />
-              <div className="news-info">
-                <h3>뉴스이름</h3>
-                <p>뉴스 내용..</p>
-                <span>시간 | 신문사</span>
+            <div className="header-center">
+              <nav className="nav-toggle">
+                <button className={location.pathname === '/' ? "active" : ""}>뉴스페이지</button>
+                <Link to="/boardPage">
+                <button className={location.pathname === "/boardPage" ? "active" : ""}>게시글 목록</button>
+                </Link>
+              </nav>
+              <div className="search-bar">
+                <span className="search-icon">🔍</span>
+                <input type="text" placeholder=" / 를 눌러 검색하세요" className="search-input"/>
               </div>
             </div>
+
+            <Link to ="/login">
+              <button className="login-btn">로그인</button>
+            </Link>
+          </header>
+
+
+
+          <div className="news-list">
+            {newsList.map((news) => (
+            <div key={news.id} className="news-item" onClick={() => setSelectedNews(news)}>
+              
+              <div className="sub-header">
+                <span className="title">{news.title}</span>
+              </div>
+
+              <h2 className="news-content">{news.content}</h2>
+
+              <div className="content-center">
+              <p className="news-date">{news.date}</p>
+              <span className="newspaper">{news.newspaper}</span>
+              </div>
+
           </div>
-        </main>
-
-        {/* 사이드 바 */}
-        <aside className="sidebar">
-          <ul>
-            <li>관심</li>
-            <li>메모</li>
-            <li>최근 본</li>
-            <li>마이페이지</li>
-          </ul>
-        </aside>
-      </div>
+        ))}
+          </div>
+          {selectedNews && <NewsDetailModal news={selectedNews} onClose={() => setSelectedNews(null)} />}
+        </div>
     );
-  }
-
+}
 export default NewsPage;

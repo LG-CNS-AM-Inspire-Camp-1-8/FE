@@ -4,3 +4,4 @@ function BoardFormModal() {
         <></>
     )
 }
+export default BoardFormModal
