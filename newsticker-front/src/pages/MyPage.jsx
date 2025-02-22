@@ -2,6 +2,29 @@ import styled from "styled-components";
 import profile from "../assets/icons/profile.png";
 
 function MyPage() {
+  const myNewsList = [
+    {
+      id: 1,
+      title: "관심 뉴스 1",
+      content: "삼성전자 최고 ...",
+      date: "2025년 2월 19일",
+      newspaper: "매일경제",
+    },
+    {
+      id: 2,
+      title: "관심 뉴스 2",
+      content: "삼성전자 최고 ...",
+      date: "2025년 2월 19일",
+      newspaper: "아주경제",
+    },
+    {
+      id: 3,
+      title: "관심 뉴스 3",
+      content: "삼성전자 최고 ...",
+      date: "2025년 2월 19일",
+      newspaper: "매일경제",
+    },
+  ];
   return (
     <Container>
       <Logo>📈 NewsTickr</Logo>
@@ -21,6 +44,18 @@ function MyPage() {
       </MyBox>
       <Mynews>
         <Title>❤️‍🔥 나의 관심 뉴스</Title>
+        <NewsList>
+          {myNewsList.map((news) => (
+            <NewsItem key={news.id}>
+              <div className="sub-header">{news.newspaper}</div>
+              <h2 className="news-content">{news.content}</h2>
+              <div className="content-cneter">
+                <p>{news.date}</p>
+                <span className="newspaper">{news.newspaper}</span>
+              </div>
+            </NewsItem>
+          ))}
+        </NewsList>
       </Mynews>
     </Container>
   );
@@ -37,9 +72,9 @@ const Logo = styled.h1`
 const MyBox = styled.div`
   width: 92%;
   margin-left: 30px;
-  height: 200px;
+  height: 180px;
   padding: 40px;
-  background: linear-gradient(to right, #c66, #cd3c3c);
+  background: #a50034;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
@@ -54,8 +89,8 @@ const Profile = styled.div`
   text-align: center;
   gap: 8px;
   img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
   }
   .actions {
@@ -85,7 +120,7 @@ const Info = styled.div`
   }
 
   div:last-child {
-    background: black;
+    background: #6b6b6b;
     margin-top: 10px;
     color: white;
     padding: 6px 12px;
@@ -100,4 +135,40 @@ const Title = styled.h2`
   font-size: 28px;
   font-weight: bold;
   color: #222;
+`;
+
+const NewsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-left: 50px;
+  margin-top: 20px;
+`;
+
+const NewsItem = styled.div`
+  background: #e3e3e3;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  width: 80%;
+
+  .sub-header {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .news-content {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+  }
+
+  .content-center {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #777;
+  }
 `;

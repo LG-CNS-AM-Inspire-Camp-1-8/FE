@@ -1,9 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const goSignup = () => {
+    navigate("/signup");
+  };
 
   return (
     <Container>
@@ -30,7 +36,10 @@ function LoginPage() {
         </Box>
         <LoginBtn>로그인</LoginBtn>
         <SignUp>
-          계정이 없으신가요? <a href="#">계정 생성</a>
+          계정이 없으신가요?{" "}
+          <a href="#" onClick={goSignup}>
+            계정 생성
+          </a>
         </SignUp>
       </LoginBox>
     </Container>
@@ -44,7 +53,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #eb3232, #ffffff);
+  background: linear-gradient(to bottom, #a50034, #ffffff);
 `;
 
 const Logo = styled.h1`
@@ -93,7 +102,7 @@ const Input = styled.input`
 const LoginBtn = styled.button`
   width: 100%;
   padding: 12px;
-  background-color: #eb3232;
+  background-color: #a50034;
   color: white;
   font-size: 16px;
   border: none;
@@ -112,7 +121,7 @@ const SignUp = styled.p`
   color: #555;
 
   a {
-    color: #eb3232;
+    color: #a50034;
     text-decoration: none;
     font-weight: bold;
 
