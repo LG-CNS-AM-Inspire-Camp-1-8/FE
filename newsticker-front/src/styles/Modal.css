@@ -16,11 +16,11 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 400px; /* 원하는 크기로 조절 */
+    width: 400px;
     max-width: 90%;
   }
 
-  .modal-content button {
+  .modal-content .closebtn {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -30,4 +30,48 @@
     cursor: pointer;
     width: 20px;
     color: #6b7684;
+  }
+
+  .modal-header{
+    display: flex;
+    gap: 10px;
+    height: 40px;
+  }
+  
+  .modal-header .boardbtn{
+    background: #A50034;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .modal_form {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  .textname, textarea {
+    width: calc(100% - 15px);
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .file-input {
+    width: calc(100% - 15px);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+  }
+  .upload-button {
+    width: calc(100% - 15px);
+    background-color: #A50034;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
   }

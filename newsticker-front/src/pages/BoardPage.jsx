@@ -1,6 +1,6 @@
 import { useState } from "react";
 import NavBar from "../components/NavBar";
-import BoardFormModal from '../components/BoardFormModal';
+import BoardFormModal from '../components/BoardDetailModal';
 import '../styles/Page.css';
 import profile from "../assets/icons/profile.png";
 
