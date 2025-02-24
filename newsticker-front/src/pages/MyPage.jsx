@@ -3,14 +3,51 @@ import profileIcon from "../assets/icons/profile.png";
 import UserEditFormModal from "../components/UserEditFormModal";
 import { useEffect, useState } from "react";
 import api from "../api/axios.jsx";
+import ChangeImg from "../components/ChangeImg.jsx";
 
 function MyPage() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imgModal, setImgModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const openModel = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openImgModal = () => setImgModal(true);
+  const closeImgModal = () => setImgModal(false);
+
+  const handleProfileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleProfileSubmit = async () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("profileImg", selectedFile);
+
+      try {
+        const response = await api.post("/user", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (response.data.success) {
+          setProfile(URL.createObjectURL(selectedFile));
+        } else {
+          console.error("파일 업로드 실패", response.data.message);
+        }
+      } catch (error) {
+        console.error("파일 업로드 오류 발생", error);
+      }
+      closeImgModal();
+    }
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -53,10 +90,6 @@ function MyPage() {
     },
   ];
 
-  const changeProfile = () => {
-    console.log("changeProfile");
-  };
-
   const downloadProfile = () => {
     console.log("downloadProfile");
   };
@@ -68,7 +101,7 @@ function MyPage() {
         <Profile>
           <img src={profile || profileIcon} alt="프로필 이미지 " />
           <div className="actions">
-            <div onClick={changeProfile}>사진 변경</div>
+            <div onClick={openImgModal}>사진 변경</div>
             <div onClick={downloadProfile}>사진 다운로드</div>
           </div>
         </Profile>
@@ -101,6 +134,13 @@ function MyPage() {
         </NewsList>
       </Mynews>
       {isModalOpen && <UserEditFormModal onClose={closeModal} />}
+      {imgModal && (
+        <ChangeImg
+          onClose={closeImgModal}
+          handleProfileChange={handleProfileChange}
+          handleProfileSubmit={handleProfileSubmit}
+        />
+      )}
     </Container>
   );
 }
