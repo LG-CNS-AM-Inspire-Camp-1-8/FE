@@ -13,15 +13,13 @@ function NewsDetailModal({ news, onClose }) {
     <div className="modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         {/* 제목 + 게시글 작성 버튼 */}
-        <div className="modal-header">
-          <h2 className="news-title">{news.title}</h2>
-        </div>
+        <h2 className="news-title">{news.title}</h2>
 
         {/* 출처 + 날짜 */}
         <div className="news-info">
-          <span className="date">{news.pubDate}</span>
+          <p className="date">{news.pubDate.split(' +')[0]}</p>
           <button
-            className="circle-button"
+            className="boardGoBtn"
             onClick={() =>
               navigate("/boardWrite", {
                 state: {
@@ -37,7 +35,7 @@ function NewsDetailModal({ news, onClose }) {
 
         {/* 분석 결과 버튼 */}
         <div className="analysis-result">
-          <button className="analysis-btn">감정 분석 결과 📊</button>
+          <button className="analysis-btn">주가 영향 분석 결과 📊</button>
         </div>
 
         {/* 기사 요약 */}
@@ -47,9 +45,13 @@ function NewsDetailModal({ news, onClose }) {
         </div>
 
         {/* 기사 본문 */}
+        <h3>원본 뉴스로 📌</h3>
         <div className="news-link">
-          <p>{news.link}</p>
+          <a href={news.link} target="_blank" rel="noopener noreferrer">
+            {news.link}
+          </a>
         </div>
+
 
         {/* 닫기 버튼 */}
         <button className="closebtn" onClick={onClose}>

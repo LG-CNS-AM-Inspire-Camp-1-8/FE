@@ -43,7 +43,7 @@ function NewsPage() {
               <div className="content">
                 <p dangerouslySetInnerHTML={{ __html: news.title}}/>
                 <p dangerouslySetInnerHTML={{ __html: news.description }}/>
-                <p className="date">{news.pubDate}</p>
+                <p className="date">{news.pubDate.split(' +')[0]}</p>
               </div>
             </div>
         </div>
