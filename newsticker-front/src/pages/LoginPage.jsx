@@ -11,6 +11,10 @@ function LoginPage() {
     navigate("/signup");
   };
 
+  const onNaverLogin = () => {
+    window.location.href = "http://localhost:8085/oauth2/authorization/naver";
+  }
+
   return (
     <Container>
       <Logo>📈 NewsTickr</Logo>
@@ -35,6 +39,11 @@ function LoginPage() {
           />
         </Box>
         <LoginBtn>로그인</LoginBtn>
+        <LoginBtn onClick={onNaverLogin}>
+          {/* [TODO] 여기에 네이버 이미지 깨짐 도와주세요. */}
+          <img src='../assets/icons/btnG_icon_square.png'/>
+          네이버 로그인
+        </LoginBtn>
         <SignUp>
           계정이 없으신가요?{" "}
           <a href="#" onClick={goSignup}>
