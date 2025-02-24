@@ -35,11 +35,9 @@ function LoginPage() {
           />
         </Box>
         <LoginBtn>로그인</LoginBtn>
+        <NaverBtn>NAVER로 로그인</NaverBtn>
         <SignUp>
-          계정이 없으신가요?{" "}
-          <a href="#" onClick={goSignup}>
-            계정 생성
-          </a>
+          계정이 없으신가요? <a onClick={goSignup}>계정 생성</a>
         </SignUp>
       </LoginBox>
     </Container>
@@ -114,6 +112,17 @@ const LoginBtn = styled.button`
     background-color: #b90000;
   }
 `;
+const NaverBtn = styled.button`
+  width: 100%;
+  padding: 12px;
+  background-color: #6b6b6b;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 7px;
+`;
 
 const SignUp = styled.p`
   margin-top: 20px;
@@ -124,6 +133,7 @@ const SignUp = styled.p`
     color: #a50034;
     text-decoration: none;
     font-weight: bold;
+    cursor: pointer;
 
     &:hover {
       text-decoration: underline;
