@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
 import BoardPage from "./pages/BoardPage";
+import BoardWritePage from "./pages/BoardWritePage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/boardPage" element={<BoardPage />} />
+        <Route path="/boardWrite" element={<BoardWritePage />} />
       </Routes>
     </Router>
   );
