@@ -1,3 +1,4 @@
+/* 전체 모달 페이지 css */
 .modal {
     position: fixed;
     top: 50%;
@@ -13,11 +14,14 @@
   .modal-content {
     position: relative;
     background: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    max-width: 90%;
+    width: 45%;
+    max-height: 80vh; /* 모달 최대 높이 제한 */
+    overflow-y: auto; /* 내부 스크롤 가능 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* IE, Edge에서 스크롤바 숨기기 */
   }
 
   .modal-content .closebtn {
@@ -31,7 +35,7 @@
     width: 20px;
     color: #6b7684;
   }
-
+  /* 게시글 작성 모달 */
   .modal-header{
     display: flex;
     gap: 10px;
@@ -52,21 +56,19 @@
     font-weight: bold;
   }
   .textname, textarea {
-    width: calc(100% - 15px);
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    width: 100%;
   }
   .file-input {
-    width: calc(100% - 15px);
     display: flex;
     justify-content: space-between;
     margin-top: 5px;
   }
   .upload-button {
-    width: calc(100% - 15px);
     background-color: #A50034;
     color: white;
     padding: 10px;
@@ -74,4 +76,121 @@
     border-radius: 4px;
     cursor: pointer;
     margin-top: 15px;
+    width: 100%;
   }
+
+  /* 댓글 css */
+  .form-comment{
+    display: flex;
+    flex-direction: column;
+  }
+  .form-comment textarea{
+    resize: none;
+    border: 1px solid #dbdbdb;
+    padding: 15px 20px;
+    outline: none;
+    margin-bottom: 10px;
+  }
+  .form-comment .submit{
+    background-color: #A50034;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;  
+    margin-bottom: 10px;
+  }
+
+/* 레이아웃 - 댓글 */
+.comments {
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+}
+.comments .comment {
+  border-bottom: 1px solid #dbdbdb;
+  padding: 20px;
+}
+.comments .comment:last-child {
+  border-bottom: none;
+}
+
+/* 상단 메뉴 */
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.top .username {
+  font-weight: bold;
+}
+.top .utility {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+/* 하단 메뉴 */
+.bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  font-weight: bold;
+  font-size: 13px;
+}
+.bottom .divider {
+  width: 1px;
+  height: 20px;
+  background-color: #dbdbdb;
+  margin: 0 10px;
+}
+
+.bottom .show-reply, .menu {
+  border: none;
+  background-color: transparent;
+  color: #bebebe;
+  font-weight: bold;
+}
+
+
+/* boraddetailmodal 답글 */
+.replies {
+  position: relative;
+  background-color: #f2f2f2;
+  padding: 0 20px 15px 25px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+.replies:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #ddd;
+  border-radius: 8px;
+}
+.replies .content p{
+  margin: 10px 0
+}
+.replies .reply {
+  padding: 10px 0px;
+  border-bottom: 1px solid #dbdbdb;
+}
+.replies .reply:last-of-type {
+  border-bottom: none;
+}
+.replies .submit{
+  background-color: #A50034;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
