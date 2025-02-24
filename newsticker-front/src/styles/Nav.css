@@ -1,3 +1,5 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
 .news-header{
     display: flex;
     justify-content: space-between;
@@ -9,7 +11,11 @@
     display: flex;
     align-items: center;
     margin-left: 50px;
-    font-size: 20px;
+    font-size: 25px;
+    font-family: "Julius Sans One", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-weight: 1000;
   }
 
   .login-btn{
@@ -23,7 +29,7 @@
     cursor: pointer;
     margin-right: 50px;
   }
-    a{
+  a{
     text-decoration: none;
   }
   .header-center {

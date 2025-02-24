@@ -47,13 +47,11 @@ function BoardPage() {
             {/* 타이틀 */}
             <div className="sub-header">
               <span className="title">{board.title}</span>
-
-              <h2 className="content">{board.content}</h2>
             </div>
             {/* 날짜 */}
             <div className="content-center">
               <p className="date">{board.description}</p>
-              {/* 원래 date */}
+            {/* 원래 date */}
             </div>
           </div>
         ))}

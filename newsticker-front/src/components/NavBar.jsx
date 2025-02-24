@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import "../styles/Nav.css";
 import { useState } from "react";
+import iconIMG from '../assets/icons/chart.png'
 
 function NavBar({onSearch}) {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
 
+  /* 검색 */
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   }
@@ -16,6 +18,7 @@ function NavBar({onSearch}) {
       onSearch(searchTerm.trim()); // 검색 실행
     }
   };
+
   return (
     <header className="news-header">
       <div className="logo">NewsTickr</div>

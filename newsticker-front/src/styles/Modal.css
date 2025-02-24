@@ -35,6 +35,9 @@
     width: 20px;
     color: #6b7684;
   }
+  h3{
+    margin: 15px 0;
+  }
 /* --------------- NewsDetail 스타일 ----------------- */
 .news-title {
   font-size: 20px;
