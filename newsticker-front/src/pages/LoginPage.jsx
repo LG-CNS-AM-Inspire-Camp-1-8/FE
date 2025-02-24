@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import naverLogo from "../assets/icons/btnG_icon_square.png";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -13,7 +14,7 @@ function LoginPage() {
 
   const onNaverLogin = () => {
     window.location.href = "http://localhost:8085/oauth2/authorization/naver";
-  }
+  };
 
   return (
     <Container>
@@ -40,8 +41,7 @@ function LoginPage() {
         </Box>
         <LoginBtn>로그인</LoginBtn>
         <LoginBtn onClick={onNaverLogin}>
-          {/* [TODO] 여기에 네이버 이미지 깨짐 도와주세요. */}
-          <img src='../assets/icons/btnG_icon_square.png'/>
+          <img src={naverLogo} />
           네이버 로그인
         </LoginBtn>
         <SignUp>
@@ -118,9 +118,14 @@ const LoginBtn = styled.button`
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s;
+  margin-top: 10px;
 
   &:hover {
     background-color: #b90000;
+  }
+  img {
+    width: 15px;
+    margin-right: 3px;
   }
 `;
 
