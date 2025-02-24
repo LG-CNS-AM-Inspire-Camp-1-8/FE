@@ -10,8 +10,23 @@ function BoardWritePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    try {
+      const response = await api.post("/news/post", {
+        link,
+        title,
+        description,
+        content,
+      });
 
+      console.log("게시글 등록 요청:", response.data);
+      alert("게시글 등록 성공!");
+      navigate("/board");
+    } catch (error) {
+      console.error("게시글 등록 오류:", error);
+      alert("게시글 등록 실패!");
+    }
+  };
   return (
     <div>
       <NavBar />

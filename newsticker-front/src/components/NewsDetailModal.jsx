@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BoardFormModal from "../components/BoardFormModal";
 import "../styles/Modal.css";
+import { useNavigate } from "react-router-dom";
 
 function NewsDetailModal({ news, onClose }) {
   const [showBoardModal, setShowBoardModal] = useState(false);
