@@ -8,4 +8,9 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export const isAuthenticated = () => {
+  const cookies = document.cookie.split("; ");
+  return cookies.some((cookie) => cookie.startsWith("Authorization="));
+};
+
 export default api;
