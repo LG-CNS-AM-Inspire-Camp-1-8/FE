@@ -32,6 +32,15 @@ function MyPage() {
       newspaper: "매일경제",
     },
   ];
+
+  const changeProfile = () =>{
+    console.log('changeProfile')
+  }
+
+  const downloadProfile = () =>{
+    console.log('downloadProfile')
+  }
+
   return (
     <Container>
       <Logo>📈 NewsTickr</Logo>
@@ -39,8 +48,8 @@ function MyPage() {
         <Profile>
           <img src={profile} />
           <div className="actions">
-            <div>사진 변경</div>
-            <div>사진 다운로드</div>
+            <div onClick={changeProfile}>사진 변경</div>
+            <div onClick={downloadProfile}>사진 다운로드</div>
           </div>
         </Profile>
         <Info>
