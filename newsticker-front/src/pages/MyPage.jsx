@@ -1,7 +1,14 @@
 import styled from "styled-components";
 import profile from "../assets/icons/profile.png";
+import UserEditFormModal from "../components/UserEditFormModal";
+import { useState } from "react";
 
 function MyPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModel = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const myNewsList = [
     {
       id: 1,
@@ -48,7 +55,7 @@ function MyPage() {
         <Info>
           <div>김땡땡</div>
           <div>newstickr@naver.com</div>
-          <div> 회원 정보 수정 </div>
+          <div onClick={openModel}> 회원 정보 수정 </div>
         </Info>
       </MyBox>
       <Mynews>
@@ -66,12 +73,16 @@ function MyPage() {
           ))}
         </NewsList>
       </Mynews>
+      {isModalOpen && <UserEditFormModal onClose={closeModal} />}
     </Container>
   );
 }
 export default MyPage;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 80%;
+  margin: 0 auto;
+`;
 const Logo = styled.h1`
   margin-left: 50px;
   font-size: 44px;
@@ -79,9 +90,9 @@ const Logo = styled.h1`
   color: #222;
 `;
 const MyBox = styled.div`
-  width: 92%;
+  width: 90%;
   margin-left: 30px;
-  height: 180px;
+  height: 140px;
   padding: 40px;
   background: #a50034;
   border-radius: 12px;
@@ -159,7 +170,8 @@ const NewsItem = styled.div`
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-  width: 80%;
+  width: 90%;
+  margin-left: 20px;
 
   .sub-header {
     font-size: 18px;
