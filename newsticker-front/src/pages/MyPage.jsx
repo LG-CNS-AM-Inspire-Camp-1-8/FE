@@ -1,7 +1,14 @@
 import styled from "styled-components";
 import profile from "../assets/icons/profile.png";
+import UserEditFormModal from "../components/UserEditFormModal";
+import { useState } from "react";
 
 function MyPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModel = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const myNewsList = [
     {
       id: 1,
@@ -39,7 +46,7 @@ function MyPage() {
         <Info>
           <div>김땡땡</div>
           <div>newstickr@naver.com</div>
-          <div> 회원 정보 수정 </div>
+          <div onClick={openModel}> 회원 정보 수정 </div>
         </Info>
       </MyBox>
       <Mynews>
@@ -57,6 +64,7 @@ function MyPage() {
           ))}
         </NewsList>
       </Mynews>
+      {isModalOpen && <UserEditFormModal onClose={closeModal} />}
     </Container>
   );
 }
