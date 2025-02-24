@@ -1,16 +1,16 @@
 import { useState } from "react";
 import BoardFormModal from "../components/BoardFormModal";
-import '../styles/Modal.css';
+import "../styles/Modal.css";
 
 function NewsDetailModal({ news, onClose }) {
   const [showBoardModal, setShowBoardModal] = useState(false);
+  const navigate = useNavigate();
 
   if (!news) return null;
 
   return (
     <div className="modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-
         {/* 제목 + 게시글 작성 버튼 */}
         <div className="modal-header">
           <h2 className="news-title">{news.title}</h2>
@@ -19,7 +19,19 @@ function NewsDetailModal({ news, onClose }) {
         {/* 출처 + 날짜 */}
         <div className="news-info">
           <span className="date">{news.pubDate}</span>
-          <button className="circle-button" onClick={() => setShowBoardModal(true)}>게시글작성</button>
+          <button
+            className="circle-button"
+            onClick={() =>
+              navigate("/boardWrite", {
+                state: {
+                  link: news.link,
+                  description: news.description,
+                },
+              })
+            }
+          >
+            게시글작성
+          </button>
         </div>
 
         {/* 분석 결과 버튼 */}
@@ -39,15 +51,14 @@ function NewsDetailModal({ news, onClose }) {
         </div>
 
         {/* 닫기 버튼 */}
-        <button className="closebtn" onClick={onClose}>X</button>
+        <button className="closebtn" onClick={onClose}>
+          X
+        </button>
       </div>
 
       {/* 게시물 작성 모달 */}
       {showBoardModal && (
-        <BoardFormModal 
-          board={news} 
-          onClose={() => setShowBoardModal(false)} 
-        />
+        <BoardFormModal board={news} onClose={() => setShowBoardModal(false)} />
       )}
     </div>
   );
