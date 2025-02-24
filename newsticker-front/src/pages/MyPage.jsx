@@ -4,6 +4,7 @@ import UserEditFormModal from "../components/UserEditFormModal";
 import { useEffect, useState } from "react";
 import api from "../api/axios.jsx";
 import ChangeImg from "../components/ChangeImg.jsx";
+import NavBar from "../components/NavBar.jsx";
 
 function MyPage() {
   const [user, setUser] = useState(null);
@@ -52,7 +53,7 @@ function MyPage() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await api.get("/user", { withCredentials: true });
+        const response = await api.get("/user/", { withCredentials: true });
 
         const { profileImg } = response.data;
 
@@ -69,24 +70,21 @@ function MyPage() {
   const myNewsList = [
     {
       id: 1,
-      title: "관심 뉴스 1",
-      content: "삼성전자 최고 ...",
+      title: "게시글 1",
+      content: "내가 작성한 글 ...",
       date: "2025년 2월 19일",
-      newspaper: "매일경제",
     },
     {
       id: 2,
-      title: "관심 뉴스 2",
-      content: "삼성전자 최고 ...",
+      title: "게시글 2",
+      content: "내가 작성한 글입니다",
       date: "2025년 2월 19일",
-      newspaper: "아주경제",
     },
     {
       id: 3,
-      title: "관심 뉴스 3",
-      content: "삼성전자 최고 ...",
+      title: "게시글 3",
+      content: "내가 작성한 글",
       date: "2025년 2월 19일",
-      newspaper: "매일경제",
     },
   ];
 
@@ -96,6 +94,7 @@ function MyPage() {
 
   return (
     <Container>
+      <NavBar />
       <Logo>📈 NewsTickr</Logo>
       <MyBox>
         <Profile>
@@ -110,24 +109,25 @@ function MyPage() {
             <>
               <div>{user.name}</div>
               <div>{user.email}</div>
+              <div onClick={openModel}> 회원 정보 수정 </div>
             </>
           ) : (
-            <div>로그인 후 이용해 주세요.</div>
+            <>
+              <div>로그인 후 이용해 주세요.</div>
+              <div>로그인하기</div>
+            </>
           )}
-
-          <div onClick={openModel}> 회원 정보 수정 </div>
         </Info>
       </MyBox>
       <Mynews>
-        <Title>❤️‍🔥 나의 관심 뉴스</Title>
+        <Title>❤️‍🔥 내가 작성한 글</Title>
         <NewsList>
           {myNewsList.map((news) => (
             <NewsItem key={news.id}>
-              <div className="sub-header">{news.newspaper}</div>
-              <h2 className="news-content">{news.content}</h2>
+              <h2 className="news-content">{news.title}</h2>
               <div className="content-cneter">
+                <div>{news.content}</div>
                 <p>{news.date}</p>
-                <span className="newspaper">{news.newspaper}</span>
               </div>
             </NewsItem>
           ))}
@@ -152,13 +152,13 @@ const Container = styled.div`
 `;
 const Logo = styled.h1`
   margin-left: 50px;
-  font-size: 44px;
+  font-size: 34px;
   font-weight: bold;
   color: #222;
 `;
 const MyBox = styled.div`
-  width: 90%;
-  margin-left: 30px;
+  width: 83%;
+  margin-left: 70px;
   height: 140px;
   padding: 40px;
   background: #a50034;
