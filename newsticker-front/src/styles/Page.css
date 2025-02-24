@@ -21,6 +21,43 @@
     color: #6b7684;
     font-size: 14px;
   }
+  .sub-header{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .sub-header .news-image {
+    width: 120px;  
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .content p {
+    margin: 0;
+    line-height: 1.4;
+  }
+  
+  .content p:first-child { /* 제목 */
+    font-size: 16px;
+    font-weight: bold;
+    color: #333d4b;
+  }
+  
+  .content p:nth-child(2) { /* 설명 */
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .date {
+    font-size: 12px;
+    color: gray;
+  }
   .content-center{
     display: flex;
     align-items: center;
