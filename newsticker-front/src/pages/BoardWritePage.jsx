@@ -1,16 +1,28 @@
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../api/axios.jsx";
+import { isAuthenticated } from "../api/axios";
 
 function BoardWritePage() {
   const location = useLocation();
   const { link, description } = location.state || {};
 
+  useEffect(() => {
+    console.log("받아온 뉴스 링크:", link);
+    console.log("받아온 뉴스 요약:", description);
+  }, [link, description]);
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const handleSubmit = async () => {
+    // if (!isAuthenticated()) {
+    //   alert("로그인 후 이용해주세요");
+    //   return;
+    // }
+
     try {
       const response = await api.post("/news/post", {
         link,
@@ -20,11 +32,11 @@ function BoardWritePage() {
       });
 
       console.log("게시글 등록 요청:", response.data);
-      alert("게시글 등록 성공!");
-      navigate("/board");
+      alert("게시글 등록 완료!");
+      navigate("/boardPage");
     } catch (error) {
       console.error("게시글 등록 오류:", error);
-      alert("게시글 등록 실패!");
+      alert("게시글 등록에 실패했습니다. ");
     }
   };
   return (
