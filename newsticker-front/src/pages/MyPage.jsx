@@ -1,13 +1,33 @@
 import styled from "styled-components";
-import profile from "../assets/icons/profile.png";
+import profileIcon from "../assets/icons/profile.png";
 import UserEditFormModal from "../components/UserEditFormModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../api/axios.jsx";
 
 function MyPage() {
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModel = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await api.get("/user", { withCredentials: true });
+
+        const { profileImg } = response.data;
+
+        setUser(response.data);
+        setProfile(profileImg);
+      } catch (error) {
+        console.error("회원 정보 조회 실패:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const myNewsList = [
     {
@@ -33,28 +53,35 @@ function MyPage() {
     },
   ];
 
-  const changeProfile = () =>{
-    console.log('changeProfile')
-  }
+  const changeProfile = () => {
+    console.log("changeProfile");
+  };
 
-  const downloadProfile = () =>{
-    console.log('downloadProfile')
-  }
+  const downloadProfile = () => {
+    console.log("downloadProfile");
+  };
 
   return (
     <Container>
       <Logo>📈 NewsTickr</Logo>
       <MyBox>
         <Profile>
-          <img src={profile} />
+          <img src={profile || profileIcon} alt="프로필 이미지 " />
           <div className="actions">
             <div onClick={changeProfile}>사진 변경</div>
             <div onClick={downloadProfile}>사진 다운로드</div>
           </div>
         </Profile>
         <Info>
-          <div>김땡땡</div>
-          <div>newstickr@naver.com</div>
+          {user ? (
+            <>
+              <div>{user.name}</div>
+              <div>{user.email}</div>
+            </>
+          ) : (
+            <div>로그인 후 이용해 주세요.</div>
+          )}
+
           <div onClick={openModel}> 회원 정보 수정 </div>
         </Info>
       </MyBox>
