@@ -1,9 +1,21 @@
 import { Link, useLocation } from "react-router-dom";
 import "../styles/Nav.css";
+import { useState } from "react";
 
-function NavBar() {
+function NavBar({onSearch}) {
   const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  }
+
+  /* 엔터실행 */
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && searchTerm.trim() !== "") {
+      onSearch(searchTerm.trim()); // 검색 실행
+    }
+  };
   return (
     <header className="news-header">
       <div className="logo">NewsTickr</div>
@@ -34,6 +46,9 @@ function NavBar() {
             type="text"
             placeholder=" / 를 눌러 검색하세요"
             className="search-input"
+            value={searchTerm}
+            onChange={handleSearch}
+            onKeyDown={handleKeyPress}
           />
         </div>
       </div>

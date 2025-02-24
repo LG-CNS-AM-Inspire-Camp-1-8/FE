@@ -28,14 +28,14 @@ function NewsDetailModal({ news, onClose }) {
         </div>
 
         {/* 기사 요약 */}
+        <h3>기사 본문 요약 📌</h3>
         <div className="news-summary">
-          <h3>기사 본문 요약 📌</h3>
           <p>{news.description}</p>
         </div>
 
         {/* 기사 본문 */}
-        <div className="news-content">
-          <p>{news.content}</p>
+        <div className="news-link">
+          <p>{news.link}</p>
         </div>
 
         {/* 닫기 버튼 */}
