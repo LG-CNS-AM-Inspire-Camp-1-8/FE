@@ -19,14 +19,14 @@ function BoardDetailModal({ board, onClose }) {
   };
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await api.get(`/api/comment/news/${newsId}`);
-        setComments(response.data);
-      } catch (error) {
-        console.log("댓글 조회 실패", error);
-      }
-    };
+    // const fetchComments = async () => {
+    //   try {
+    //     const response = await api.get(`/api/comment/news/${newsId}`);
+    //     setComments(response.data);
+    //   } catch (error) {
+    //     console.log("댓글 조회 실패", error);
+    //   }
+    // };
     if (newsId) {
       fetchComments();
     }
@@ -53,7 +53,9 @@ function BoardDetailModal({ board, onClose }) {
       alert("댓글 내용을 입력해주세요.");
     }
   };
-
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value);
+  };
   return (
     <Modal onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -71,15 +73,15 @@ function BoardDetailModal({ board, onClose }) {
         <ContentBox>{board.content}</ContentBox>
 
         <Form>
-          <TextArea placeholder="댓글을 남겨주세요" />
-          <SubmitButton type="button">등록하기</SubmitButton>
+          <TextArea placeholder="댓글을 남겨주세요" onChange={handleCommentChange}/>
+          <SubmitButton type="button" onClick={handleSubmit}>등록하기</SubmitButton>
         </Form>
 
         <CommentSection>
           {comments.map((comment) => (
             <Comment key={comment.id}>
-              <CommentAuthor>{comment.author}</CommentAuthor>
-              <CommentText>{comment.text}</CommentText>
+              <CommentAuthor>{comment.username}</CommentAuthor>
+              <CommentText>{comment.content}</CommentText>
               <ToggleReplyButton
                 onClick={() => setIsReplyVisible(!isReplyVisible)}
               >
