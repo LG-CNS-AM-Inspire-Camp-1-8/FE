@@ -12,13 +12,18 @@ function BoardWritePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [analysis, setAnalysis] = useState("");
-
+  const [sanitizedDescription, setSanitizedDescription] = useState("");
   const sanitizeText = (text) => {
     return text
       ?.replace(/\s+/g, " ") // 개행 및 공백 문자 제거
       .replace(/<[^>]*>/g, "") // HTML 태그 제거
       .trim(); // 앞뒤 공백 제거
   };
+  useEffect(() => {
+    if (description) {
+      setSanitizedDescription(sanitizeText(description));
+    }
+  }, [description]);
 
   const fetchAnalysis = async (description) => {
     try {
@@ -71,14 +76,16 @@ function BoardWritePage() {
       <Container>
         <Title>게시글 작성</Title>
 
-        <Label>제목</Label>
+        <Label>제목 </Label>
         <Input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        <Label>기사 요약 🔮</Label>
+        <SumBox>{sanitizedDescription}</SumBox>
 
-        <Label>내용</Label>
+        <Label>내용 📝</Label>
         <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -95,7 +102,7 @@ export default BoardWritePage;
 const Container = styled.div`
   width: 80%;
   margin: 50px auto 0;
-  margin-left: 280px;
+  margin-left: 300px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -106,13 +113,14 @@ const Title = styled.h2`
   margin-bottom: 20px;
   margin-top: -20px;
   text-align: center;
-  margin-right: 190px;
+  margin-right: 220px;
 `;
 
 const Label = styled.label`
   font-size: 18px;
   margin-bottom: 5px;
   font-weight: 700;
+  margin-left: 10px;
 `;
 
 const Input = styled.input`
@@ -125,24 +133,8 @@ const Input = styled.input`
   margin-bottom: 15px;
 `;
 
-const ImageUploadContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-`;
-
-const UploadButton = styled.button`
-  background-color: #a50034;
-  color: white;
-  border: none;
-  width: 100px;
-  height: 40px;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-
 const Textarea = styled.textarea`
-  width: 80%;
+  width: 82%;
   height: 400px;
   background-color: #e0e0e0;
   border: none;
@@ -161,5 +153,17 @@ const SubmitButton = styled.button`
   align-self: center;
   height: 40px;
   font-size: 15px;
-  margin-right: 190px;
+  margin-right: 230px;
+`;
+
+const SumBox = styled.div`
+  background-color: #e0e0e0;
+  width: 80%;
+  min-height: 50px;
+  padding: 10px;
+  border-radius: 5px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  margin-bottom: 20px;
 `;
