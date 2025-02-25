@@ -24,13 +24,20 @@ function MyPage() {
     if (file) {
       setSelectedFile(file);
     }
+    // const response = api.post("/user", file, { withCredentials: true ,contentType: "multipart/form-data"});
+    // console.log(response);
+    // if (response.data.success) {
+    //   setProfile(URL.createObjectURL(file));
+    // } else {
+    //   console.error("파일 업로드 실패", response.data.message);
+    // }
   };
 
   const handleProfileSubmit = async () => {
     if (selectedFile) {
       const formData = new FormData();
-      formData.append("profileImg", selectedFile);
-
+      formData.append("file", selectedFile);
+      console.log({formData})
       try {
         const response = await api.post("/user", formData, {
           headers: {
@@ -41,7 +48,7 @@ function MyPage() {
         if (response.data.success) {
           setProfile(URL.createObjectURL(selectedFile));
         } else {
-          console.error("파일 업로드 실패", response.data.message);
+          console.error("파일 업로드 실패", response.data);
         }
       } catch (error) {
         console.error("파일 업로드 오류 발생", error);
@@ -54,11 +61,13 @@ function MyPage() {
     const fetchUserInfo = async () => {
       try {
         const response = await api.get("/user/", { withCredentials: true });
+        // console.log(response.data.profileImg);
 
         const { profileImg } = response.data;
-
-        setUser(response.data);
+        
+        console.log(profileImg);
         setProfile(profileImg);
+        setUser(response.data);
       } catch (error) {
         console.error("회원 정보 조회 실패:", error);
       }
@@ -88,8 +97,25 @@ function MyPage() {
     },
   ];
 
-  const downloadProfile = () => {
-    console.log("downloadProfile");
+  const downloadProfile = async () => {
+    try {
+      // API 요청 보내기
+      const response = await api.get(`/user/download/${profile}`, { responseType: 'blob' });
+      
+      // Blob 객체 URL 생성
+      const url = window.URL.createObjectURL(response.data);
+  
+      // 다운로드 링크 생성
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'profile'; // 다운로드할 파일명 지정
+      a.click();
+  
+      // Blob URL 해제
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('파일 다운로드 중 오류 발생:', error);
+    }
   };
 
   return (
@@ -98,7 +124,7 @@ function MyPage() {
       <Logo>📈 NewsTickr</Logo>
       <MyBox>
         <Profile>
-          <img src={profile || profileIcon} alt="프로필 이미지 " />
+          <img src={`http://localhost:8085/user/profile/${profile}` || profileIcon} alt="프로필 이미지 " />
           <div className="actions">
             <div onClick={openImgModal}>사진 변경</div>
             <div onClick={downloadProfile}>사진 다운로드</div>
