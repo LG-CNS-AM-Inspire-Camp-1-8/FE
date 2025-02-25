@@ -11,7 +11,7 @@ function SignUpPage() {
 
   return (
     <Container>
-      <Logo>📈 NewsTickr</Logo>
+      <Logo>NewsTickr</Logo>
       <SignUpBox>
         <Title>Sign Up</Title>
         <Box>
@@ -65,7 +65,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #eb3232, #ffffff);
+  background: linear-gradient(to bottom, #d6ebf2 0%, #f0f5fa 50%, #ffffff 100%);
 `;
 
 const Logo = styled.h1`
@@ -73,6 +73,9 @@ const Logo = styled.h1`
   font-weight: bold;
   color: #222;
   margin-bottom: 70px;
+  font-family: "Julius Sans One", serif;
+  font-style: normal;
+  font-weight: 1000;
 `;
 
 const SignUpBox = styled.div`
@@ -114,7 +117,7 @@ const Input = styled.input`
 const SignUpBtn = styled.button`
   width: 100%;
   padding: 12px;
-  background-color: #eb3232;
+  background-color: #6b6b6b;
   color: white;
   font-size: 16px;
   border: none;
@@ -123,7 +126,7 @@ const SignUpBtn = styled.button`
   transition: 0.3s;
 
   &:hover {
-    background-color: #b90000;
+    background-color: #A50034;
   }
 `;
 

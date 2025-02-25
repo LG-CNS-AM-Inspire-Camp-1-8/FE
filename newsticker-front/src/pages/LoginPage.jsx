@@ -18,7 +18,7 @@ function LoginPage() {
 
   return (
     <Container>
-      <Logo>📈 NewsTickr</Logo>
+      <Logo>NewsTickr</Logo>
       <LoginBox>
         <Title>뉴스티커로 로그인</Title>
         <Box>
@@ -40,10 +40,10 @@ function LoginPage() {
           />
         </Box>
         <LoginBtn>로그인</LoginBtn>
-        <LoginBtn onClick={onNaverLogin}>
+        <NaverLoginBtn onClick={onNaverLogin}>
           <img src={naverLogo} />
           네이버 로그인
-        </LoginBtn>
+        </NaverLoginBtn>
         <SignUp>
           계정이 없으신가요?{" "}
           <a href="#" onClick={goSignup}>
@@ -62,10 +62,13 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #a50034, #ffffff);
+  background: linear-gradient(to bottom, #d6ebf2 0%, #f0f5fa 50%, #ffffff 100%);
 `;
 
 const Logo = styled.h1`
+  font-family: "Julius Sans One", serif;
+  font-style: normal;
+  font-weight: 1000;
   font-size: 44px;
   font-weight: bold;
   color: #222;
@@ -111,7 +114,7 @@ const Input = styled.input`
 const LoginBtn = styled.button`
   width: 100%;
   padding: 12px;
-  background-color: #a50034;
+  background-color: #6b6b6b;
   color: white;
   font-size: 16px;
   border: none;
@@ -121,13 +124,29 @@ const LoginBtn = styled.button`
   margin-top: 10px;
 
   &:hover {
-    background-color: #b90000;
+    background-color: #A50034;
   }
   img {
     width: 15px;
     margin-right: 3px;
   }
 `;
+const NaverLoginBtn = styled(LoginBtn)`
+  background-color: #03C75A; /* 네이버 공식 색상 */
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 20px;
+  &:hover {
+    background-color:  #03C75A;
+  }
+  img {
+    width: 27px;
+    height: 27px;
+  }
+`;
+
 
 const SignUp = styled.p`
   margin-top: 20px;

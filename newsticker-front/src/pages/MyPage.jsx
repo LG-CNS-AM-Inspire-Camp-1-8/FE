@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios.jsx";
 import ChangeImg from "../components/ChangeImg.jsx";
 import NavBar from "../components/NavBar.jsx";
+import { useNavigate } from "react-router-dom";
 
 function MyPage() {
   const [user, setUser] = useState(null);
@@ -13,11 +14,18 @@ function MyPage() {
   const [imgModal, setImgModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const [myNewsList, setMyNewsList] = useState([]);
+  const navigate = useNavigate();
+
   const openModel = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const openImgModal = () => setImgModal(true);
   const closeImgModal = () => setImgModal(false);
+
+  const goLogin = () => {
+    navigate("/login");
+  };
 
   const handleProfileChange = async (e) => {
     const file = e.target.files[0];
@@ -37,7 +45,7 @@ function MyPage() {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      console.log({formData})
+      console.log({ formData });
       try {
         const response = await api.post("/user", formData, {
           headers: {
@@ -64,7 +72,7 @@ function MyPage() {
         // console.log(response.data.profileImg);
 
         const { profileImg } = response.data;
-        
+
         console.log(profileImg);
         setProfile(profileImg);
         setUser(response.data);
@@ -72,49 +80,39 @@ function MyPage() {
         console.error("회원 정보 조회 실패:", error);
       }
     };
+    const fetchMyPosts = async () => {
+      try {
+        const response = await api.get("/news/postList");
+        setMyNewsList(response.data);
+      } catch (error) {
+        console.log("게시글 목록 조회 실패", error);
+      }
+    };
 
     fetchUserInfo();
+    fetchMyPosts();
   }, []);
-
-  const myNewsList = [
-    {
-      id: 1,
-      title: "게시글 1",
-      content: "내가 작성한 글 ...",
-      date: "2025년 2월 19일",
-    },
-    {
-      id: 2,
-      title: "게시글 2",
-      content: "내가 작성한 글입니다",
-      date: "2025년 2월 19일",
-    },
-    {
-      id: 3,
-      title: "게시글 3",
-      content: "내가 작성한 글",
-      date: "2025년 2월 19일",
-    },
-  ];
 
   const downloadProfile = async () => {
     try {
       // API 요청 보내기
-      const response = await api.get(`/user/download/${profile}`, { responseType: 'blob' });
-      
+      const response = await api.get(`/user/download/${profile}`, {
+        responseType: "blob",
+      });
+
       // Blob 객체 URL 생성
       const url = window.URL.createObjectURL(response.data);
-  
+
       // 다운로드 링크 생성
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = 'profile'; // 다운로드할 파일명 지정
+      a.download = "profile"; // 다운로드할 파일명 지정
       a.click();
-  
+
       // Blob URL 해제
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('파일 다운로드 중 오류 발생:', error);
+      console.error("파일 다운로드 중 오류 발생:", error);
     }
   };
 
@@ -124,7 +122,10 @@ function MyPage() {
       <Logo>📈 NewsTickr</Logo>
       <MyBox>
         <Profile>
-          <img src={`http://localhost:8085/user/profile/${profile}` || profileIcon} alt="프로필 이미지 " />
+          <img
+            src={`http://localhost:8085/user/profile/${profile}` || profileIcon}
+            alt="프로필 이미지 "
+          />
           <div className="actions">
             <div onClick={openImgModal}>사진 변경</div>
             <div onClick={downloadProfile}>사진 다운로드</div>
@@ -140,7 +141,7 @@ function MyPage() {
           ) : (
             <>
               <div>로그인 후 이용해 주세요.</div>
-              <div>로그인하기</div>
+              <div onClick={goLogin}>로그인하기</div>
             </>
           )}
         </Info>
@@ -153,7 +154,7 @@ function MyPage() {
               <h2 className="news-content">{news.title}</h2>
               <div className="content-cneter">
                 <div>{news.content}</div>
-                <p>{news.date}</p>
+                <p>{new Date(news.date).toLocaleString()}</p>
               </div>
             </NewsItem>
           ))}

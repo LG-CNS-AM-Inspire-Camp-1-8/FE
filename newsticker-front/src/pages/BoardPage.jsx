@@ -7,8 +7,10 @@ import api, {getUserId} from "../api/axios.jsx";
 
 function BoardPage() {
   const [selectedBoard, setSelectedBoard] = useState(null);
-  const [boardlist, setBoardlist] = useState([]);
-  const [query, setQuery] = useState(""); 
+  const [allBoards, setAllBoards] = useState([]); // 전체 게시글 목록 저장
+  const [boardlist, setBoardlist] = useState([]); // 화면에 보여줄 게시글 목록
+  const [visibleCount, setVisibleCount] = useState(5); 
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [ user, setUser ] = useState(null);
   const fetchUserFromJwt = async () => {
@@ -21,7 +23,7 @@ function BoardPage() {
     // console.log({user});
   },[]);
 
-  //메인페이지
+  // 게시글 불러오기
   useEffect(() => {
     const fetchMyBoards = async () => {
       try {
@@ -30,7 +32,8 @@ function BoardPage() {
         });
 
         console.log("내가 작성한 게시글:", response.data);
-        setBoardlist(response.data);
+        setAllBoards(response.data); // 전체 데이터를 저장
+        setBoardlist(response.data.slice(0, 5)); // 처음 3개만 보여줌
       } catch (error) {
         console.error("게시글을 불러오는 데 실패했습니다.", error);
       }
@@ -38,12 +41,13 @@ function BoardPage() {
 
     fetchMyBoards();
   }, []);
+
   // 검색 기능
   useEffect(() => {
-    if (query.trim() === "") return; 
+    if (query.trim() === "") return;
     setLoading(true);
 
-    api.get(`/news/${query}`) // 게시글 제목 검색 API
+    api.get(`/news/${query}`)
       .then((response) => {
         setBoardlist(response.data);
         setLoading(false);
@@ -54,10 +58,16 @@ function BoardPage() {
       });
   }, [query]);
 
+  // "더보기" 버튼 클릭 시 3개씩 추가 표시
+  const handleLoadMore = () => {
+    const newCount = visibleCount + 3; // 3개씩 증가
+    setVisibleCount(newCount);
+    setBoardlist(allBoards.slice(0, newCount)); // 기존 데이터 유지하면서 추가
+  };
 
   return (
     <div className="board-page">
-      <NavBar onNewsSearch={() => {}} onBoardSearch={setQuery}/>
+      <NavBar onNewsSearch={() => {}} onBoardSearch={setQuery} />
       <div className="list">
         <h2>게시글 목록</h2>
         {boardlist.length === 0 ? (
@@ -69,12 +79,11 @@ function BoardPage() {
               className="item"
               onClick={() => setSelectedBoard(board)}
             >
-
               <div className="boardContent">
                 {/* 유저 */}
                 <div className="userprofile">
-                  <img src={profile} />
-                  <span className="name">{board.userName.slice(0,6)}</span>
+                  <img src={profile} alt="profile" />
+                  <span className="name">{board.userName}</span>
                 </div>
                 {/* 타이틀 */}
                 <div className="board-title">
@@ -86,6 +95,12 @@ function BoardPage() {
               </div>
             </div>
           ))
+        )}
+        {/* 더보기 버튼 */}
+        {visibleCount < allBoards.length && (
+          <div className="loadingBtn">
+            <button onClick={handleLoadMore}>더보기</button>
+          </div>
         )}
       </div>
       {selectedBoard && (

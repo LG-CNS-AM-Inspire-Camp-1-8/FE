@@ -11,6 +11,10 @@ function NewsDetailModal({ news, onClose }) {
 
   const navigate = useNavigate();
 
+  const stripHtmlTags = (text) => {
+    return text.replace(/<[^>]*>/g, '');
+  };
+
   const analyzeSentiment = async (newsContent) => {
     setIsAnalyzing(true);
     setAnalysisResult(null);
@@ -32,7 +36,7 @@ function NewsDetailModal({ news, onClose }) {
     <div className="modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         {/* 제목 + 게시글 작성 버튼 */}
-        <h2 className="news-title">{news.title}</h2>
+        <h2 className="news-title">{stripHtmlTags(news.title)}</h2>
 
         {/* 출처 + 날짜 */}
         <div className="news-info">
@@ -71,7 +75,7 @@ function NewsDetailModal({ news, onClose }) {
         {/* 기사 요약 */}
         <h3>기사 본문 요약 📌</h3>
         <div className="news-summary">
-          <p>{news.description}</p>
+          <p>{stripHtmlTags(news.description)}</p>
         </div>
 
         {/* 원본 뉴스 링크 */}

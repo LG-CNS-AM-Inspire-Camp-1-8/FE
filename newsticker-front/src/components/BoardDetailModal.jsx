@@ -32,12 +32,6 @@ function BoardDetailModal({ board, onClose, user }) {
     
   }, [newsId]);
 
-  useEffect(() => {
-    if (board) {
-      console.log("현재 보고 있는 게시글 ID:", board.id);
-    }
-  }, [board]);
-
   const handleSubmit = async () => {
     if (newComment.trim()) {
       try {
@@ -53,8 +47,19 @@ function BoardDetailModal({ board, onClose, user }) {
       alert("댓글 내용을 입력해주세요.");
     }
   };
-  const handleCommentChange = (e) => {
-    setNewComment(e.target.value);
+
+  const deleteBoard = async () => {
+    if (!window.confirm("정말 삭제하시겠습니다?")) return;
+
+    try {
+      await api.delete(`/news/${newsId}`);
+      alert("게시글이 삭제되었습니다.");
+      onDelete(newsId);
+      onClose();
+    } catch (error) {
+      console.log("게시글 삭제 실패", error);
+      alert("게시글 삭제에 실패했습니다.");
+    }
   };
 
   const handleDeleteComment = async (commentId) => {
@@ -102,13 +107,12 @@ function BoardDetailModal({ board, onClose, user }) {
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <Header>
           <NewsTitle>{board.title}</NewsTitle>
-          <Badge>게시글 삭제</Badge>
+          <Badge onClick={deleteBoard}>게시글 삭제</Badge>
         </Header>
-        <DateText>{board.date}</DateText>
-        <SubInfo>작성자 이름</SubInfo>
-        <SubInfo>{"Tue, 25 Feb 2025 15:04:00"}</SubInfo>
+        <DateText>{new Date(board.date).toLocaleString()}</DateText>
+        <SubInfo>{board.userName}</SubInfo>
 
-        <AnalysisButton>"주가 영향 분석 결과 📊"</AnalysisButton>
+        <AnalysisButton>"감정 분석 결과 📊"</AnalysisButton>
 
         <SectionTitle>기사 본문 요약</SectionTitle>
         <ContentBox>{board.content}</ContentBox>
