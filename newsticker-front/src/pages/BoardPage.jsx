@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import BoardFormModal from "../components/BoardDetailModal";
 import "../styles/Page.css";
 import profile from "../assets/icons/profile.png";
-import api from "../api/axios.jsx";
+import api, {getUserId} from "../api/axios.jsx";
 
 function BoardPage() {
   const [selectedBoard, setSelectedBoard] = useState(null);
@@ -12,6 +12,16 @@ function BoardPage() {
   const [visibleCount, setVisibleCount] = useState(5); 
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [ user, setUser ] = useState(null);
+  const fetchUserFromJwt = async () => {
+    const userInfo = getUserId();
+    setUser(userInfo);
+  };
+  useEffect(() => {
+    fetchUserFromJwt();
+    console.log(user);
+    // console.log({user});
+  },[]);
 
   // 게시글 불러오기
   useEffect(() => {
@@ -97,6 +107,7 @@ function BoardPage() {
         <BoardFormModal
           board={selectedBoard}
           onClose={() => setSelectedBoard(null)}
+          user={user}
         />
       )}
     </div>

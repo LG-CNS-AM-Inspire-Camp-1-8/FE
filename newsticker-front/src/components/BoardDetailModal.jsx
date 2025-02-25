@@ -2,26 +2,34 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import api from "../api/axios.jsx";
 
-function BoardDetailModal({ board, onClose, onDelete }) {
+function BoardDetailModal({ board, onClose, user }) {
   if (!board) return null;
-  const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [editedComment, setEditedComment] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
   const newsId = board.id;
-
+  
+  
   const fetchComments = async () => {
     try {
       const response = await api.get(`/api/comment/news/${newsId}`);
-      setComments(response.data);
+      // 댓글 목록에 isReplyVisible을 각 댓글에 추가
+      const commentsWithReplies = response.data.map(comment => ({
+        ...comment,
+        isReplyVisible: false, // 초기값은 false
+      }));
+      setComments(commentsWithReplies);
     } catch (error) {
       console.log("댓글 조회 실패", error);
     }
   };
-
+  
   useEffect(() => {
     if (newsId) {
       fetchComments();
     }
+    
   }, [newsId]);
 
   const handleSubmit = async () => {
@@ -54,6 +62,46 @@ function BoardDetailModal({ board, onClose, onDelete }) {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    try{
+      await api.delete(`/api/comment/?commentId=${commentId}`);
+      fetchComments();
+    }catch(error){
+      console.log("댓글 삭제 실패", error);
+    }
+  };
+  const handleEditComment = (commentId) => {
+    const commentToEdit = comments.find(comment => comment.commentId === commentId);
+    setEditingCommentId(commentId);  // 현재 수정 중인 댓글 ID 설정
+    setEditedComment(decodeURIComponent(commentToEdit.content));  // 수정할 댓글 내용 설정
+  };
+  const handleUpdateComment = async () => {
+    if (editedComment.trim()) {
+      try {
+        await api.post(`/api/comment/?commentId=${editingCommentId}`, {
+          content: editedComment,
+        });
+        setEditedComment("");  // 수정 후 입력창 비우기
+        setEditingCommentId(null);  // 수정 모드 종료
+        fetchComments();  // 댓글 목록 새로고침
+      } catch (error) {
+        console.log("댓글 수정 실패", error);
+      }
+    } else {
+      alert("댓글 내용을 입력해주세요.");
+    }
+  };
+
+  const toggleReplyVisibility = (commentId) => {
+    setComments(prevComments =>
+      prevComments.map(comment =>
+        comment.commentId === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible }
+          : comment
+      )
+    );
+    console.log(comments)
+  };
+
   return (
     <Modal onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -70,35 +118,58 @@ function BoardDetailModal({ board, onClose, onDelete }) {
         <ContentBox>{board.content}</ContentBox>
 
         <Form>
-          <TextArea placeholder="댓글을 남겨주세요" />
-          <SubmitButton type="button">등록하기</SubmitButton>
+          <TextArea placeholder="댓글을 남겨주세요" value={newComment} onChange={handleCommentChange} />
+          <SubmitButton type="button" onClick={handleSubmit}>
+            등록하기
+          </SubmitButton>
         </Form>
 
         <CommentSection>
           {comments.map((comment) => (
-            <Comment key={comment.id}>
-              <CommentAuthor>{comment.author}</CommentAuthor>
-              <CommentText>{comment.text}</CommentText>
-              <ToggleReplyButton
-                onClick={() => setIsReplyVisible(!isReplyVisible)}
-              >
-                {isReplyVisible ? "Hide Replies" : "Show Replies"}
-              </ToggleReplyButton>
+            // console.log(comment),
+            <Comment key={comment.commentId}>
+              <CommentAuthor>{comment.username}</CommentAuthor>
+              <CommentText>{decodeURIComponent(comment.content)}</CommentText>
+              
+              { user?.id == comment.userId ? 
+              <EditButton onClick={() => handleEditComment(comment.commentId)}>수정</EditButton>
+               : null
+              }
+              { user?.id == comment.userId ?
+                <DeleteButton onClick={() => handleDeleteComment(comment.commentId)}>삭제</DeleteButton>
+                : null
+              }
+              {editingCommentId === comment.commentId && (
+                <Form>
+                  <TextArea
+                    placeholder="Edit Comment"
+                    value={editedComment}
+                    onChange={(e) => setEditedComment(e.target.value)}
+                  />
+                  <SubmitButton type="button" onClick={handleUpdateComment}>
+                    수정하기
+                  </SubmitButton>
+                </Form>
+              )}
+              
+              {/* <ToggleReplyButton onClick={() => toggleReplyVisibility(comment.commentId)}>
+                {comment.isReplyVisible ? "Hide Replies" : "Show Replies"}
+              </ToggleReplyButton> */}
+
+              {/* {comment.isReplyVisible && (
+                <ReplySection>
+                  <CommentAuthor>관리자</CommentAuthor>
+                  <CommentText>감사합니다!</CommentText>
+                  <Form>
+                    <TextArea placeholder="Reply" />
+                    <SubmitButton type="button" onClick={handleSubmit}>
+                      등록하기
+                    </SubmitButton>
+                  </Form>
+                </ReplySection>
+              )} */}
             </Comment>
           ))}
-
-          {isReplyVisible && (
-            <ReplySection>
-              <CommentAuthor>관리자</CommentAuthor>
-              <CommentText>감사합니다!</CommentText>
-              <Form>
-                <TextArea placeholder="Reply" />
-                <SubmitButton type="button" onClick={handleSubmit}>
-                  등록하기
-                </SubmitButton>
-              </Form>
-            </ReplySection>
-          )}
         </CommentSection>
 
         <CloseButton onClick={onClose}>X</CloseButton>
@@ -240,6 +311,10 @@ const CommentSection = styled.div`
 
 const Comment = styled.div`
   margin-bottom: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const CommentAuthor = styled.p`
@@ -277,4 +352,22 @@ const CloseButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   color: #6b7684;
+`;
+
+const EditButton = styled.button`
+  margin-top: 6px;
+  font-size: 13px;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+`;
+
+const DeleteButton = styled.button`
+margin-top: 6px;
+  font-size: 13px;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
 `;
