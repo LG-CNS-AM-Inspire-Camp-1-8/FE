@@ -1,5 +1,4 @@
 import { useState } from "react";
-import BoardFormModal from "../components/BoardFormModal";
 import "../styles/Modal.css";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
