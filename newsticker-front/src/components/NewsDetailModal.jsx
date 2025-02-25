@@ -1,6 +1,5 @@
 import { isAuthenticated } from "../api/axios"; // isAuthenticated 함수의 위치에 맞게 경로 조정
 import { useState } from "react";
-import BoardFormModal from "../components/BoardFormModal";
 import "../styles/Modal.css";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
