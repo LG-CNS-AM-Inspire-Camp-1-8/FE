@@ -44,8 +44,8 @@ function MyPage() {
             "Content-Type": "multipart/form-data",
           },
         });
-
-        if (response.data.success) {
+        console.log(response);
+        if (response.status === 200) {
           setProfile(URL.createObjectURL(selectedFile));
         } else {
           console.error("파일 업로드 실패", response.data);
