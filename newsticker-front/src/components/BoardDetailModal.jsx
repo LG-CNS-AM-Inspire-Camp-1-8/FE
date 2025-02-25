@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import api from "../api/axios.jsx";
 
-function BoardDetailModal({ board, onClose }) {
+function BoardDetailModal({ board, onClose, onDelete }) {
   if (!board) return null;
   const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [comments, setComments] = useState([]);
@@ -19,24 +19,10 @@ function BoardDetailModal({ board, onClose }) {
   };
 
   useEffect(() => {
-    // const fetchComments = async () => {
-    //   try {
-    //     const response = await api.get(`/api/comment/news/${newsId}`);
-    //     setComments(response.data);
-    //   } catch (error) {
-    //     console.log("댓글 조회 실패", error);
-    //   }
-    // };
     if (newsId) {
       fetchComments();
     }
   }, [newsId]);
-
-  useEffect(() => {
-    if (board) {
-      console.log("현재 보고 있는 게시글 ID:", board.id);
-    }
-  }, [board]);
 
   const handleSubmit = async () => {
     if (newComment.trim()) {
@@ -53,35 +39,46 @@ function BoardDetailModal({ board, onClose }) {
       alert("댓글 내용을 입력해주세요.");
     }
   };
-  const handleCommentChange = (e) => {
-    setNewComment(e.target.value);
+
+  const deleteBoard = async () => {
+    if (!window.confirm("정말 삭제하시겠습니다?")) return;
+
+    try {
+      await api.delete(`/news/${newsId}`);
+      alert("게시글이 삭제되었습니다.");
+      onDelete(newsId);
+      onClose();
+    } catch (error) {
+      console.log("게시글 삭제 실패", error);
+      alert("게시글 삭제에 실패했습니다.");
+    }
   };
+
   return (
     <Modal onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <Header>
           <NewsTitle>{board.title}</NewsTitle>
-          <Badge>게시글 삭제</Badge>
+          <Badge onClick={deleteBoard}>게시글 삭제</Badge>
         </Header>
-        <DateText>{board.date}</DateText>
-        <SubInfo>작성자 이름</SubInfo>
-        <SubInfo>{"Tue, 25 Feb 2025 15:04:00"}</SubInfo>
+        <DateText>{new Date(board.date).toLocaleString()}</DateText>
+        <SubInfo>{board.userName}</SubInfo>
 
-        <AnalysisButton>"주가 영향 분석 결과 📊"</AnalysisButton>
+        <AnalysisButton>"감정 분석 결과 📊"</AnalysisButton>
 
         <SectionTitle>기사 본문 요약</SectionTitle>
         <ContentBox>{board.content}</ContentBox>
 
         <Form>
-          <TextArea placeholder="댓글을 남겨주세요" onChange={handleCommentChange}/>
-          <SubmitButton type="button" onClick={handleSubmit}>등록하기</SubmitButton>
+          <TextArea placeholder="댓글을 남겨주세요" />
+          <SubmitButton type="button">등록하기</SubmitButton>
         </Form>
 
         <CommentSection>
           {comments.map((comment) => (
             <Comment key={comment.id}>
-              <CommentAuthor>{comment.username}</CommentAuthor>
-              <CommentText>{decodeURIComponent(comment.content)}</CommentText>
+              <CommentAuthor>{comment.author}</CommentAuthor>
+              <CommentText>{comment.text}</CommentText>
               <ToggleReplyButton
                 onClick={() => setIsReplyVisible(!isReplyVisible)}
               >

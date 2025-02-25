@@ -8,7 +8,7 @@ import api from "../api/axios.jsx";
 function BoardPage() {
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [boardlist, setBoardlist] = useState([]);
-  const [query, setQuery] = useState(""); 
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
 
   //메인페이지
@@ -19,7 +19,7 @@ function BoardPage() {
           withCredentials: true, // 쿠키 기반 JWT 사용
         });
 
-        console.log("내가 작성한 게시글:", response.data);
+        console.log("전체 게시글 조회:", response.data);
         setBoardlist(response.data);
       } catch (error) {
         console.error("게시글을 불러오는 데 실패했습니다.", error);
@@ -28,12 +28,18 @@ function BoardPage() {
 
     fetchMyBoards();
   }, []);
+
+  const handleDelete = (deletedId) => {
+    setBoardlist((prev) => prev.filter((board) => board.id !== deletedId));
+  };
+
   // 검색 기능
   useEffect(() => {
-    if (query.trim() === "") return; 
+    if (query.trim() === "") return;
     setLoading(true);
 
-    api.get(`/news/${query}`) // 게시글 제목 검색 API
+    api
+      .get(`/news/${query}`) // 게시글 제목 검색 API
       .then((response) => {
         setBoardlist(response.data);
         setLoading(false);
@@ -44,10 +50,9 @@ function BoardPage() {
       });
   }, [query]);
 
-
   return (
     <div className="board-page">
-      <NavBar onNewsSearch={() => {}} onBoardSearch={setQuery}/>
+      <NavBar onNewsSearch={() => {}} onBoardSearch={setQuery} />
       <div className="list">
         <h2>게시글 목록</h2>
         {boardlist.length === 0 ? (
@@ -59,12 +64,11 @@ function BoardPage() {
               className="item"
               onClick={() => setSelectedBoard(board)}
             >
-
               <div className="boardContent">
                 {/* 유저 */}
                 <div className="userprofile">
                   <img src={profile} />
-                  <span className="name">{board.userName.slice(0,6)}</span>
+                  <span className="name">{board.userName.slice(0, 6)}</span>
                 </div>
                 {/* 타이틀 */}
                 <div className="board-title">
@@ -82,6 +86,7 @@ function BoardPage() {
         <BoardFormModal
           board={selectedBoard}
           onClose={() => setSelectedBoard(null)}
+          onDelete={handleDelete}
         />
       )}
     </div>
