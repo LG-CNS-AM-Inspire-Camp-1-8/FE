@@ -2,9 +2,27 @@ import { useState } from "react";
 import BoardFormModal from "../components/BoardFormModal";
 import "../styles/Modal.css";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 function NewsDetailModal({ news, onClose }) {
   const [showBoardModal, setShowBoardModal] = useState(false);
+  const [analysisResult,setAnalysisResult] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+const analyzeSentiment = async (newsContent) => {
+  setIsAnalyzing(true);
+  setAnalysisResult(null);
+
+  try {
+    const response = await api.post("/news/analysis", { summary: newsContent });
+    console.log("감정 분석 응답:", response.data); // 응답 확인
+
+    // API 응답 데이터에서 정확한 키 이름을 사용해야 함
+    setAnalysisResult(response.data);
+  } catch (error) {
+    console.error("감정 분석 실패:", error);
+  } 
+};
   const navigate = useNavigate();
 
   if (!news) return null;
@@ -33,10 +51,20 @@ function NewsDetailModal({ news, onClose }) {
           </button>
         </div>
 
-        {/* 분석 결과 버튼 */}
-        <div className="analysis-result">
-          <button className="analysis-btn">주가 영향 분석 결과 📊</button>
-        </div>
+        
+      {/* 감정 분석 버튼 */}
+      <div className="analysis-result">
+        <button
+          className="analysis-btn"
+          onClick={() => analyzeSentiment(news.description)}
+          disabled={isAnalyzing} // 분석 중이면 버튼 비활성화
+        >
+          "주가 영향 분석 결과 📊"
+        </button>
+
+        {/* 분석 결과 표시 */}
+        {analysisResult && <p className="analysis-text">결과: {analysisResult}</p>}
+      </div>
 
         {/* 기사 요약 */}
         <h3>기사 본문 요약 📌</h3>
