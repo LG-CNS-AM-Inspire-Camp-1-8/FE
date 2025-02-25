@@ -17,7 +17,7 @@ function NewsDetailModal({ news, onClose }) {
 
         {/* 출처 + 날짜 */}
         <div className="news-info">
-          <p className="date">{news.pubDate.split(' +')[0]}</p>
+          <p className="date">{news.pubDate.split(" +")[0]}</p>
           <button
             className="boardGoBtn"
             onClick={() =>
@@ -51,7 +51,6 @@ function NewsDetailModal({ news, onClose }) {
             {news.link}
           </a>
         </div>
-
 
         {/* 닫기 버튼 */}
         <button className="closebtn" onClick={onClose}>
