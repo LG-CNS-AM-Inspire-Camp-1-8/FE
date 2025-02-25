@@ -192,7 +192,7 @@
   margin-left: auto;
 }
 
-/* 하단 메뉴 */
+/* -------------- 하단 메뉴 ----------------- */
 .bottom {
   display: flex;
   flex-direction: row;

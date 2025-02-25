@@ -18,56 +18,61 @@ function NewsPage() {
   const [newsList, setNewsList] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const defaultQuery = "nvidia"; // 기본 뉴스 키워드
 
   /* 뉴스 이미지 더미 */
   const images = [page0, page1, page2, page3, page4, page5, page6, page7];
-  const getRandomImage = () =>
-    images[Math.floor(Math.random() * images.length)];
+  const getRandomImage = () => images[Math.floor(Math.random() * images.length)];
 
-  //보여지는 더미 뉴스들
-  useEffect(() => {
-    api.get("/news/news?query=nvidia").then((response) => {
+  // 🔹 기본 뉴스 불러오기 함수
+  const fetchDefaultNews = async () => {
+    setLoading(true);
+    try {
+      const response = await api.get(`/news/news?query=${defaultQuery}`);
       setNewsList(response.data.items);
-    });
+    } catch (error) {
+      console.error("기본 뉴스 불러오기 실패:", error);
+    }
+    setLoading(false);
+  };
+
+  // 🔹 첫 렌더링 시 기본 뉴스 요청
+  useEffect(() => {
+    fetchDefaultNews();
   }, []);
 
+  // 🔹 검색 기능 (검색창이 비어있으면 기본 뉴스 복구)
   useEffect(() => {
-    if (query === "") {
-      // 검색어가 비어 있으면 기본 뉴스 리스트 요청
-      setLoading(true);
-      api.get("/news/news?query=nvidia").then((response) => {
+    if (query.trim() === "") {
+      fetchDefaultNews();
+      return;
+    }
+
+    setLoading(true);
+    api.get(`/news/news?query=${query}`)
+      .then((response) => {
         setNewsList(response.data.items);
         setLoading(false);
-      });
-    } else {
-      setLoading(true);
-      api
-        .get(`/news/news?query=${query}`)
-        .then((response) => {
-          setNewsList(response.data.items);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }
+      })
+      .catch(() => setLoading(false));
   }, [query]);
+
+  // 🔹 검색창이 비었을 때 기본 뉴스로 복원하는 함수
+  const resetNewsList = () => {
+    setQuery(""); // 검색어 초기화
+    fetchDefaultNews();
+  };
 
   return (
     <div className="news-page">
-      <NavBar onNewsSearch={setQuery} onBoardSearch={() => {}} />
+      <NavBar onNewsSearch={setQuery} onBoardSearch={() => {}} resetNewsList={resetNewsList} />
       <div className="list">
         <h2>주요뉴스</h2>
-        {!loading && newsList.length === 0 && query && (
-          <p>검색 결과가 없습니다.</p>
-        )}
+        {!loading && newsList.length === 0 && query && <p>검색 결과가 없습니다.</p>}
         {newsList.map((news) => (
-          <div
-            key={news.link}
-            className="item"
-            onClick={() => setSelectedNews(news)}
-          >
+          <div key={news.link} className="item" onClick={() => setSelectedNews(news)}>
             <div className="sub-header">
               <img src={getRandomImage()} className="news-image" alt="news" />
-
               <div className="content">
                 <p dangerouslySetInnerHTML={{ __html: news.title }} />
                 <p dangerouslySetInnerHTML={{ __html: news.description }} />
@@ -78,12 +83,10 @@ function NewsPage() {
         ))}
       </div>
       {selectedNews && (
-        <NewsDetailModal
-          news={selectedNews}
-          onClose={() => setSelectedNews(null)}
-        />
+        <NewsDetailModal news={selectedNews} onClose={() => setSelectedNews(null)} />
       )}
     </div>
   );
 }
+
 export default NewsPage;
