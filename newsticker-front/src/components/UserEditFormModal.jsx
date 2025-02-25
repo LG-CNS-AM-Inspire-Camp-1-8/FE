@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/Modal.css";
+import api from "../api/axios";
 
 function UserEditFormModal({ onClose }) {
   const [nickname, setNickname] = useState("");
@@ -13,12 +14,13 @@ function UserEditFormModal({ onClose }) {
 
   const handleUpdtaeUserInfo = async () => {
     try {
-      const response = await api.put("/user/info", {
-        nickname: nickname,
+      const params ={
+        name: nickname,
         email: email,
-      });
-
-      if (response.ok) {
+      }
+      const response = await api.put("/user/info",params);
+      console.log(response);
+      if (response.status === 200) {
         alert("회원 정보가 수정되었습니다.");
         onClose();
       } else {
