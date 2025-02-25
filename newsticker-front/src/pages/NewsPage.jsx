@@ -18,8 +18,11 @@ function NewsPage() {
   const [newsList, setNewsList] = useState([]);
   const [query, setQuery] = useState(""); 
   const [loading, setLoading] = useState(false);
+
+  /* 뉴스 이미지 더미 */
   const images = [page0, page1, page2, page3, page4, page5, page6, page7];
   const getRandomImage = () => images[Math.floor(Math.random() * images.length)];
+
   //보여지는 더미 뉴스들
   useEffect(() => {
     api.get("/news/news?query=nvidia")
