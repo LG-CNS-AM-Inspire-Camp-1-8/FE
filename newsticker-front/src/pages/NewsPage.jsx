@@ -40,7 +40,7 @@ function NewsPage() {
   
   return(
       <div className="news-page">
-        <NavBar onSearch={setQuery}/>
+        <NavBar onNewsSearch={setQuery} onBoardSearch={() => {}}/>
         <div className="list">
           <h2>주요뉴스</h2>
           {!loading && newsList.length === 0 && query && <p>검색 결과가 없습니다.</p>}

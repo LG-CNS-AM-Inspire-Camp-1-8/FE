@@ -8,7 +8,10 @@ import api from "../api/axios.jsx";
 function BoardPage() {
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [boardlist, setBoardlist] = useState([]);
+  const [query, setQuery] = useState(""); 
+  const [loading, setLoading] = useState(false);
 
+  //메인페이지
   useEffect(() => {
     const fetchMyBoards = async () => {
       try {
@@ -25,10 +28,26 @@ function BoardPage() {
 
     fetchMyBoards();
   }, []);
+  // 검색 기능
+  useEffect(() => {
+    if (query.trim() === "") return; 
+    setLoading(true);
+
+    api.get(`/news/${query}`) // 게시글 제목 검색 API
+      .then((response) => {
+        setBoardlist(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("게시글 검색 오류:", error);
+        setLoading(false);
+      });
+  }, [query]);
+
 
   return (
     <div className="board-page">
-      <NavBar />
+      <NavBar onNewsSearch={() => {}} onBoardSearch={setQuery}/>
       <div className="list">
         <h2>게시글 목록</h2>
         {boardlist.length === 0 ? (

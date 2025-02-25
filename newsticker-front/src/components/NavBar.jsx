@@ -1,11 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Nav.css";
-import iconIMG from "../assets/icons/chart.png";
 import { isAuthenticated } from "../api/axios"; // 실제 위치에 맞게 경로 수정
 import api from "../api/axios"; // 로그아웃 API 호출을 위한 예시
 
-function NavBar({ onSearch }) {
+function NavBar({ onNewsSearch, onBoardSearch}) {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +23,13 @@ function NavBar({ onSearch }) {
   /* 엔터키로 검색 실행 */
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && searchTerm.trim() !== "") {
-      onSearch(searchTerm.trim());
+      if (location.pathname === "/boardPage") {
+        // 게시글 검색
+        onBoardSearch(searchTerm.trim());
+      } else {
+        // 뉴스 검색
+        onNewsSearch(searchTerm.trim());
+      }
     }
   };
 
