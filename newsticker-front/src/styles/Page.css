@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: 10px;
     width: 70%;
-    margin: 0 auto;
+    margin: 0 auto 50px;
   }
 
   .item {
@@ -97,9 +97,15 @@
   .userprofile img{
     width: 20px; height: 20px;
   }
-  
-
-
+  .loadingBtn button{
+    width: 100%;
+    background: #A50034;
+    color: white;
+    padding: 15px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
   
   
   
