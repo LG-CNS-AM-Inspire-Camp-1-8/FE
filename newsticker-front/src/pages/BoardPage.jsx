@@ -72,7 +72,7 @@ function BoardPage() {
               <div className="boardContent">
                 {/* 유저 */}
                 <div className="userprofile">
-                  <img src={profile} alt="profile" />
+                  <img src={`http://localhost:8085/user/profile/${board.profileImg}`} alt="profile" />
                   <span className="name">{board.userName}</span>
                 </div>
                 {/* 타이틀 */}
