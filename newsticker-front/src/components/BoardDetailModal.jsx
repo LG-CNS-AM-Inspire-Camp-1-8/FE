@@ -81,7 +81,7 @@ function BoardDetailModal({ board, onClose }) {
           {comments.map((comment) => (
             <Comment key={comment.id}>
               <CommentAuthor>{comment.username}</CommentAuthor>
-              <CommentText>{comment.content}</CommentText>
+              <CommentText>{decodeURIComponent(comment.content)}</CommentText>
               <ToggleReplyButton
                 onClick={() => setIsReplyVisible(!isReplyVisible)}
               >
