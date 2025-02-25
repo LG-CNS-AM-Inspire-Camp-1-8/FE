@@ -9,8 +9,10 @@ const api = axios.create({
 });
 
 export const isAuthenticated = () => {
-  const cookies = document.cookie.split("; ");
-  return cookies.some((cookie) => cookie.startsWith("Authorization="));
+  console.log("현재 쿠키:", document.cookie); // 쿠키 확인용
+  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+  return cookies.some(cookie => cookie.startsWith("Authorization"));
 };
+
 
 export default api;

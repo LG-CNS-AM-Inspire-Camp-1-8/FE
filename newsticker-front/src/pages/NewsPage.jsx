@@ -18,8 +18,11 @@ function NewsPage() {
   const [newsList, setNewsList] = useState([]);
   const [query, setQuery] = useState(""); 
   const [loading, setLoading] = useState(false);
+
+  /* 뉴스 이미지 더미 */
   const images = [page0, page1, page2, page3, page4, page5, page6, page7];
   const getRandomImage = () => images[Math.floor(Math.random() * images.length)];
+
   //보여지는 더미 뉴스들
   useEffect(() => {
     api.get("/news/news?query=nvidia")
@@ -40,7 +43,7 @@ function NewsPage() {
   
   return(
       <div className="news-page">
-        <NavBar onSearch={setQuery}/>
+        <NavBar onNewsSearch={setQuery} onBoardSearch={() => {}}/>
         <div className="list">
           <h2>주요뉴스</h2>
           {!loading && newsList.length === 0 && query && <p>검색 결과가 없습니다.</p>}

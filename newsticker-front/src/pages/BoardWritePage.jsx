@@ -3,7 +3,6 @@ import NavBar from "../components/NavBar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../api/axios.jsx";
-import { isAuthenticated } from "../api/axios";
 
 function BoardWritePage() {
   const location = useLocation();
@@ -44,10 +43,6 @@ function BoardWritePage() {
   }, [description]);
 
   const handleSubmit = async () => {
-    // if (!isAuthenticated()) {
-    //   alert("로그인 후 이용해주세요");
-    //   return;
-    // }
     const sanitizedDescription = sanitizeText(description);
 
     console.log("원본 요약:", description);
