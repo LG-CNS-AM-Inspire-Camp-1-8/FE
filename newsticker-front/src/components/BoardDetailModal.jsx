@@ -4,7 +4,6 @@ import api from "../api/axios.jsx";
 
 function BoardDetailModal({ board, onClose }) {
   if (!board) return null;
-  const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const newsId = board.id;
@@ -12,21 +11,18 @@ function BoardDetailModal({ board, onClose }) {
   const fetchComments = async () => {
     try {
       const response = await api.get(`/api/comment/news/${newsId}`);
-      setComments(response.data);
+      // 댓글 목록에 isReplyVisible을 각 댓글에 추가
+      const commentsWithReplies = response.data.map(comment => ({
+        ...comment,
+        isReplyVisible: false, // 초기값은 false
+      }));
+      setComments(commentsWithReplies);
     } catch (error) {
       console.log("댓글 조회 실패", error);
     }
   };
 
   useEffect(() => {
-    // const fetchComments = async () => {
-    //   try {
-    //     const response = await api.get(`/api/comment/news/${newsId}`);
-    //     setComments(response.data);
-    //   } catch (error) {
-    //     console.log("댓글 조회 실패", error);
-    //   }
-    // };
     if (newsId) {
       fetchComments();
     }
@@ -56,6 +52,17 @@ function BoardDetailModal({ board, onClose }) {
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
   };
+
+  const toggleReplyVisibility = (commentId) => {
+    setComments(prevComments =>
+      prevComments.map(comment =>
+        comment.commentId === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible }
+          : comment
+      )
+    );
+    console.log(comments)
+  };
+
   return (
     <Modal onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -73,35 +80,36 @@ function BoardDetailModal({ board, onClose }) {
         <ContentBox>{board.content}</ContentBox>
 
         <Form>
-          <TextArea placeholder="댓글을 남겨주세요" onChange={handleCommentChange}/>
-          <SubmitButton type="button" onClick={handleSubmit}>등록하기</SubmitButton>
+          <TextArea placeholder="댓글을 남겨주세요" value={newComment} onChange={handleCommentChange} />
+          <SubmitButton type="button" onClick={handleSubmit}>
+            등록하기
+          </SubmitButton>
         </Form>
 
         <CommentSection>
           {comments.map((comment) => (
-            <Comment key={comment.id}>
+            // console.log(comment),
+            <Comment key={comment.commentId}>
               <CommentAuthor>{comment.username}</CommentAuthor>
               <CommentText>{decodeURIComponent(comment.content)}</CommentText>
-              <ToggleReplyButton
-                onClick={() => setIsReplyVisible(!isReplyVisible)}
-              >
-                {isReplyVisible ? "Hide Replies" : "Show Replies"}
+              <ToggleReplyButton onClick={() => toggleReplyVisibility(comment.commentId)}>
+                {comment.isReplyVisible ? "Hide Replies" : "Show Replies"}
               </ToggleReplyButton>
+
+              {comment.isReplyVisible && (
+                <ReplySection>
+                  <CommentAuthor>관리자</CommentAuthor>
+                  <CommentText>감사합니다!</CommentText>
+                  <Form>
+                    <TextArea placeholder="Reply" />
+                    <SubmitButton type="button" onClick={handleSubmit}>
+                      등록하기
+                    </SubmitButton>
+                  </Form>
+                </ReplySection>
+              )}
             </Comment>
           ))}
-
-          {isReplyVisible && (
-            <ReplySection>
-              <CommentAuthor>관리자</CommentAuthor>
-              <CommentText>감사합니다!</CommentText>
-              <Form>
-                <TextArea placeholder="Reply" />
-                <SubmitButton type="button" onClick={handleSubmit}>
-                  등록하기
-                </SubmitButton>
-              </Form>
-            </ReplySection>
-          )}
         </CommentSection>
 
         <CloseButton onClick={onClose}>X</CloseButton>
