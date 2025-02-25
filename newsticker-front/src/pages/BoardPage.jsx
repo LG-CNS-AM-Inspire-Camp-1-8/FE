@@ -12,7 +12,6 @@ function BoardPage() {
   useEffect(() => {
     const fetchMyBoards = async () => {
       try {
-        // ✅ 내가 작성한 게시글 조회 API 호출
         const response = await api.get("/news/", {
           withCredentials: true, // 쿠키 기반 JWT 사용
         });
