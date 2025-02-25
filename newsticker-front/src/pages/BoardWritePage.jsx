@@ -1,33 +1,64 @@
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../api/axios.jsx";
 import { isAuthenticated } from "../api/axios";
 
 function BoardWritePage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { link, description } = location.state || {};
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [analysis, setAnalysis] = useState("");
+
+  const sanitizeText = (text) => {
+    return text
+      ?.replace(/\s+/g, " ") // 개행 및 공백 문자 제거
+      .replace(/<[^>]*>/g, "") // HTML 태그 제거
+      .trim(); // 앞뒤 공백 제거
+  };
+
+  const fetchAnalysis = async (description) => {
+    try {
+      const response = await api.post("/news/analysis", {
+        summary: sanitizeText(description),
+      });
+      const analysisResult = response.data;
+
+      setAnalysis(analysisResult);
+      console.log("감정 분석 결과:", analysisResult);
+    } catch (error) {
+      console.log("감정 분석 오류:", error);
+    }
+  };
 
   useEffect(() => {
     console.log("받아온 뉴스 링크:", link);
     console.log("받아온 뉴스 요약:", description);
-  }, [link, description]);
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+    if (description) {
+      fetchAnalysis(description);
+    }
+  }, [description]);
 
   const handleSubmit = async () => {
     // if (!isAuthenticated()) {
     //   alert("로그인 후 이용해주세요");
     //   return;
     // }
+    const sanitizedDescription = sanitizeText(description);
+
+    console.log("원본 요약:", description);
+    console.log("개행 제거 후 :", sanitizedDescription);
 
     try {
       const response = await api.post("/news/post", {
         link,
         title,
-        description,
+        description: sanitizedDescription,
+        analysis,
         content,
       });
 
@@ -51,12 +82,6 @@ function BoardWritePage() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-
-        <Label>사진</Label>
-        <ImageUploadContainer>
-          <Input type="file" />
-          <UploadButton>사진 업로드</UploadButton>
-        </ImageUploadContainer>
 
         <Label>내용</Label>
         <Textarea

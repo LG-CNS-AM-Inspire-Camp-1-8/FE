@@ -35,7 +35,7 @@ const analyzeSentiment = async (newsContent) => {
 
         {/* 출처 + 날짜 */}
         <div className="news-info">
-          <p className="date">{news.pubDate.split(' +')[0]}</p>
+          <p className="date">{news.pubDate.split(" +")[0]}</p>
           <button
             className="boardGoBtn"
             onClick={() =>
@@ -79,7 +79,6 @@ const analyzeSentiment = async (newsContent) => {
             {news.link}
           </a>
         </div>
-
 
         {/* 닫기 버튼 */}
         <button className="closebtn" onClick={onClose}>
