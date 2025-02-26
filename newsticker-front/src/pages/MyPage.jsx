@@ -192,7 +192,7 @@ const Logo = styled.h1`
   font-weight: 1000;
 `;
 const MyBox = styled.div`
-  width : 100%; height :100% ;
+  height :100% ;
   padding: 40px;
   background: #a50034;
   border-radius: 12px;
