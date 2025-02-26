@@ -230,7 +230,7 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
                 </EditButton>
               ) : null}
 
-              {(user?.id === comment.userId || user?.role === "ROLE_ADMIN") && (
+              {(user?.id == comment.userId || user?.role === "ROLE_ADMIN") && (
                 <DeleteButton onClick={() => handleDeleteComment(comment.commentId, comment.userId)}>
                   삭제
                 </DeleteButton>
