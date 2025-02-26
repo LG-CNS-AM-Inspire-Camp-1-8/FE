@@ -229,20 +229,11 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
                   수정
                 </EditButton>
               ) : null}
-              {user?.id == comment.userId ? (
-                <DeleteButton
-                  onClick={() => handleDeleteComment(comment.commentId)}
-                >
-                  삭제
-                </DeleteButton>
-              ) : null}
 
               {(user?.id === comment.userId || user?.role === "ROLE_ADMIN") && (
-                  <DeleteButton
-                      onClick={() => handleDeleteComment(comment.commentId, comment.userId)}
-                  >
-                    삭제
-                  </DeleteButton>
+                <DeleteButton onClick={() => handleDeleteComment(comment.commentId, comment.userId)}>
+                  삭제
+                </DeleteButton>
               )}
 
               {editingCommentId === comment.commentId && (
