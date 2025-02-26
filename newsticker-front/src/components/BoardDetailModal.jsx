@@ -8,6 +8,9 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
   const [newComment, setNewComment] = useState("");
   const [editedComment, setEditedComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
   const newsId = board.id;
   
   
@@ -155,22 +158,51 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
     console.log(comments);
   };
 
+  const analyzeSentiment = async (newsContent) => {
+    setIsAnalyzing(true);
+    setAnalysisResult(null);
+
+    try {
+      const response = await api.post("/news/analysis", { summary: newsContent });
+      console.log("감정 분석 응답:", response.data);
+      setAnalysisResult(response.data);
+    } catch (error) {
+      console.error("감정 분석 실패:", error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   return (
-    <Modal onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <Modal onClick={onClose}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <HeaderContainer>
+              <Badge onClick={deleteBoard}>게시글 삭제</Badge>
+              <CloseButton onClick={onClose}>X</CloseButton>
+            </HeaderContainer>
+
         <Header>
           <NewsTitle>{board.title}</NewsTitle>
-          <Badge onClick={deleteBoard}>게시글 삭제</Badge>
         </Header>
         <DateText>{new Date(board.date).toLocaleString()}</DateText>
         <SubInfo>{board.userName}</SubInfo>
-
-        <AnalysisButton>"감정 분석 결과 📊"</AnalysisButton>
-        <ContentBox>{board.analysis}</ContentBox>
+        <analysisBox>
+          <button
+            className="analysis-btn"
+            onClick={() => analyzeSentiment(board.description)}
+            disabled={isAnalyzing}
+          >
+            {isAnalyzing ? "분석 중..." : "주가 영향 분석 결과 📊"}
+          </button>
+          {analysisResult && <p className="analysis-text">결과: {analysisResult}</p>}
+        </analysisBox>
 
         <SectionTitle>기사 본문 요약</SectionTitle>
         <ContentBox>{board.description}</ContentBox>
-
+        
+        <SectionBoard>📌 내가 작성한 내용</SectionBoard>
+        <ContentBox>{board.title}</ContentBox>
+        
         <Form>
           <TextArea
             placeholder="댓글을 남겨주세요"
@@ -266,8 +298,14 @@ const Modal = styled.div`
   z-index: 1000;
 `;
 
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between; /* 좌우 정렬 */
+  align-items: center; /* 수직 정렬 */
+  width: 100%;
+`;
+
 const ModalContent = styled.div`
-  position: relative;
   background: white;
   padding: 24px 28px;
   border-radius: 16px;
@@ -290,19 +328,21 @@ const Header = styled.div`
 const NewsTitle = styled.h2`
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 0;
 `;
 
 const DateText = styled.p`
   font-size: 14px;
   color: #6b7684;
-  margin-bottom: 4px;
+  margin: 4px 0 4px;
 `;
 
 const SubInfo = styled.p`
   font-size: 13px;
   color: #9e9e9e;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ccc; /* 아래쪽 선 */
 `;
 
 const Badge = styled.button`
@@ -313,9 +353,8 @@ const Badge = styled.button`
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  margin-top: 32px;
 `;
-const AnalysisButton = styled.button`
+const analysisBox = styled.button`
   background-color: #dfe8ff;
   color: #304ffe;
   padding: 8px 16px;
@@ -323,7 +362,6 @@ const AnalysisButton = styled.button`
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  margin: 16px 0;
 `;
 
 const SectionTitle = styled.h3`
@@ -340,13 +378,18 @@ const SectionTitle = styled.h3`
 `;
 
 const ContentBox = styled.div`
-  background-color: #6b7684;
-  color: white;
   padding: 16px;
-  border-radius: 10px;
+  border-radius: 8px;
   font-size: 15px;
   line-height: 1.6;
+  border: 1px solid #c4c4c4;
 `;
+const SectionBoard = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
 
 const Form = styled.form`
   display: flex;
@@ -415,18 +458,16 @@ const ReplySection = styled.div`
   border-left: 2px solid #dfe6e9;
 `;
 
-const CloseButton = styled.button`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #6b7684;
-`;
 
+const CloseButton = styled.button`
+  color: gray;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #fff;
+`;
 const EditButton = styled.button`
   margin-top: 6px;
   font-size: 13px;
