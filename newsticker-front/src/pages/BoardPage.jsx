@@ -62,6 +62,10 @@ function BoardPage() {
     setBoardlist(allBoards.slice(0, newCount));
   };
 
+  const handleDelete = (deletedId) => {
+    setBoardlist((prev) => prev.filter((board) => board.id !== deletedId));
+  };
+  
   // 검색어가 비어 있을 때 원래 게시글 목록 복원
   const resetBoardList = () => {
     setBoardlist(allBoards.slice(0, visibleCount));
@@ -99,7 +103,7 @@ function BoardPage() {
 
       </div>
       {selectedBoard && (
-          <BoardDetailModal board={selectedBoard} onClose={() => setSelectedBoard(null)} user={user} />
+          <BoardDetailModal board={selectedBoard} onClose={() => setSelectedBoard(null)} user={user} onDelete={handleDelete}/>
       )}
     </div>
   );

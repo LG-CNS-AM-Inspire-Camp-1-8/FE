@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import api from "../api/axios.jsx";
 
-function BoardDetailModal({ board, onClose, user }) {
+function BoardDetailModal({ board, onClose, onDelete,user }) {
   if (!board) return null;
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [editedComment, setEditedComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const newsId = board.id;
-
+  
+  
   const fetchComments = async () => {
     try {
       const response = await api.get(`/api/comment/news/${newsId}`);
