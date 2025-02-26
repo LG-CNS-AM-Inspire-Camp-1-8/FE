@@ -17,44 +17,86 @@ AI 기반 증권 요약 및 평가 서비스
 
 | **곽동헌** | **김우영** | **김지현** | **이다빈** | **조윤수** |
 | :------: |  :------: | :------: | :------: | :------: |
-| ![곽동헌](assets/images/a.png) | ![김우영](assets/images/b.png) | ![김지현](assets/images/c.png) | ![이다빈](assets/images/d.png) | ![조윤수](assets/images/e.png) |
+| ![곽동헌](asset/a.png) | ![김우영](asset/b.png) | ![김지현](asset/c.png) | ![이다빈](asset/d.png) | ![조윤수](asset/e.png) |
 
 </div>
-
 
 <br>
 
 ## 🕰️ 개발 기간
 * 25.02.24 ~ 25.02.27
 
-##파일구조
-| NewsTickr-FrontEnd | Description |
-|------------|------------|
-| `nginx/` | Contains Nginx configuration files for deployment. |
-| ├── `nginx.conf` | Nginx configuration file. |
-| `node_modules/` | Auto-generated dependencies (not included in version control). |
-| `src/` | Source code directory. |
-| ├── `api/` | Contains API-related functions (e.g., fetching data). |
-| ├── `assets/` | Static assets such as images, fonts, and icons. |
-| ├── `components/` | Reusable React components. |
-| ├── `pages/` | Page-level React components (used in React Router). |
-| ├── `styles/` | Global styles and CSS files. |
-| ├── `App.css` | Main CSS file for global styles. |
-| ├── `App.jsx` | Root React component that serves as the entry point of the UI. |
-| ├── `index.css` | Global stylesheet for base styles. |
-| ├── `main.jsx` | Application entry point, rendering `App.jsx` into the DOM. |
-| `.gitignore` | Specifies files and folders to be ignored by Git. |
-| `Dockerfile` | Docker configuration for containerizing the application. |
-| `eslint.config.js` | ESLint configuration for code linting. |
-| `index.html` | Main HTML file that serves as the app’s base template. |
-| `package-lock.json` | Lockfile for package dependencies. |
-| `package.json` | Metadata and dependencies for the project. |
-| `README.md` | Project documentation. |
-| `vite.config.js` | Configuration file for Vite (build tool). |
- 
+
+<br>
+
+## 🗂️ 파일구조
+```
+├── README.md
+├── .gitignore
+├── Dockerfile
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+│
+├── nginx
+│    ├── nginx.conf
+│
+├── src
+│    ├── App.css
+│    ├── App.jsx
+│    ├── index.css
+│    ├── main.jsx
+│    │
+│    ├── api
+│    │    ├── axios.jsx
+│    │    
+│    │    
+│    │
+│    ├── assets
+│    │    ├── icons
+│    │    │    ├── Account.png
+│    │    │    ├── btnG_icon_square.png
+│    │    │    ├── chart.png
+│    │    │    ├── news.png
+│    │    │    ├── page0.png
+│    │    │    ├── page1.png
+│    │    │    ├── page2.png
+│    │    │    ├── page3.png
+│    │    │    ├── page4.png
+│    │    │    ├── page5.png
+│    │    │    ├── page6.png
+│    │    │    ├── page7.png
+│    │    │    ├── profile.png
+│    │
+│    ├── components
+│    │    ├── BoardDetailModal.jsx
+│    │    ├── ChangeImg.jsx
+│    │    ├── NavBar.jsx
+│    │    ├── NewsDetailModal.jsx
+│    │    ├── UserEditFormModal.jsx
+│    │    ├── WriteModal.jsx
+│    │
+│    ├── pages
+│    │    ├── BoardPage.jsx
+│    │    ├── BoardWritePage.jsx
+│    │    ├── LoginPage.jsx
+│    │    ├── MyPage.jsx
+│    │    ├── NewsPage.jsx
+│    │    ├── SignUpPage.jsx
+│    │
+│    ├── styles
+│    │    ├── Modal.css
+│    │    ├── Nav.css
+│    │    ├── Page.css
+```
+<br />
+
 ### 🧑‍🤝‍🧑 맴버구성
  - 백엔드  : 곽동헌,김우영,조윤수
  - 프론트엔드 : 김지현,이다빈
+
+<br>
 
 ### ⚙️ 기술 스택
 
@@ -64,44 +106,51 @@ AI 기반 증권 요약 및 평가 서비스
 배포: Docker, Docker Hub, docker - compose
 AI: OpenAI API (기사 요약 및 평가 )
 
+<br>
+
 ## 📌 주요 기능
-###NavBar
+
+#### NavBar
 - 뉴스검색 (title)
 - 게시글 목록 검색 (title)
 - 로그아웃
+<br>
 #### 로그인 
 - 네이버 로그인 api OAuth 
-
+<br>
 #### 마이 페이지
 - 사진병경
 - 사진 다운로드
 - 로그인 하면 나의 이미지와 내 이메일이 보여진다
 - 로그인 하면 내가 작성한 글 보이기
 - 회원정보수정 가능 (내 이름, 이메일)
-
+<br>
 #### 게시글 작성 페이지
 - 뉴스 요약 분석 불러오기
 - 제목 , 내용 작성해서 submit
-  
+<br>
 #### 게시글 페이지
 - 게시글 작성 페이지에서 넘어온 게시물들 보이기
 - 검색기능
 - 초기 5개만 보여지고 더보기 버튼 누르면 이어서 게시물들이 보여짐
-  
-###게시글 모달페이지
+<br>
+#### 게시글 모달페이지
 - 게시글 삭제
 - 주가영향분석결과
 - 기사본문요약
 - 내가 작성한 내용
 - 댓글기능 추가
 - 댓글 수정 삭제 가능
-  
+<br>
 #### 뉴스 페이지
 - 뉴스페이지 api 불러오기
 - 검색기능
-
+<br>
 #### 뉴스 모달 페이지
 - 주가 영향 분석 결과 api
 - 기사 본문 요약 api
 - 원본뉴스로 이동
 - 게시글 작성 (로그인하지 않으면 로그인 확인 alert창)
+<br>
+<br>
+
