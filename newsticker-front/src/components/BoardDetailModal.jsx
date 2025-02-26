@@ -276,8 +276,6 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
             </Comment>
           ))}
         </CommentSection>
-
-        <CloseButton onClick={onClose}>X</CloseButton>
       </ModalContent>
     </Modal>
   );

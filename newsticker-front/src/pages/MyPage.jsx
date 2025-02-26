@@ -120,7 +120,8 @@ function MyPage() {
   return (
     <Container>
       <NavBar />
-      <Logo>📈 NewsTickr</Logo>
+      <AllContainer>
+      <Logo>NewsTickr</Logo>
       <MyBox>
         <Profile>
           <img
@@ -148,7 +149,7 @@ function MyPage() {
         </Info>
       </MyBox>
       <Mynews>
-        <Title>❤️‍🔥 내가 작성한 글</Title>
+        <Title>내가 작성한 글</Title>
         <NewsList>
           {myNewsList.map((news) => (
             <NewsItem key={news.id}>
@@ -169,32 +170,34 @@ function MyPage() {
           handleProfileSubmit={handleProfileSubmit}
         />
       )}
+      </AllContainer>
     </Container>
   );
 }
 export default MyPage;
 
 const Container = styled.div`
-  width: 80%;
-  margin: 0 auto;
+
+`;
+const AllContainer = styled.div`
+  width: 70%;
+  margin: 0 auto 50px;
 `;
 const Logo = styled.h1`
-  margin-left: 50px;
   font-size: 34px;
   font-weight: bold;
   color: #222;
+  font-family: "Julius Sans One", serif;
+  font-style: normal;
+  font-weight: 1000;
 `;
 const MyBox = styled.div`
-  width: 83%;
-  margin-left: 70px;
-  height: 140px;
+  width : 100%; height :100% ;
   padding: 40px;
   background: #a50034;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
+  box-shadow: 0 4px 10px rgba(94, 94, 94, 0.1);
   display: flex;
-  align-items: center;
   gap: 50px;
 `;
 const Profile = styled.div`
@@ -215,7 +218,7 @@ const Profile = styled.div`
   }
 
   div {
-    font-size: 20px;
+    font-size: 15px;
     color: white;
     cursor: pointer;
   }
@@ -226,11 +229,11 @@ const Info = styled.div`
   justify-content: center;
   gap: 6px;
   color: white;
-  font-size: 20px;
+  font-size: 12px;
 
   div:first-child {
     font-weight: bold;
-    font-size: 30px;
+    font-size: 23px;
     margin-bottom: 5px;
   }
 
@@ -246,17 +249,15 @@ const Info = styled.div`
 `;
 const Mynews = styled.div``;
 const Title = styled.h2`
-  margin-left: 50px;
   font-size: 28px;
-  font-weight: bold;
   color: #222;
+  margin-top: 25px;
 `;
 
 const NewsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-left: 50px;
   margin-top: 20px;
 `;
 
@@ -266,17 +267,14 @@ const NewsItem = styled.div`
   border-radius: 10px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
   width: 90%;
-  margin-left: 20px;
 
   .sub-header {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 15px;
     color: #555;
   }
 
   .news-content {
     font-size: 22px;
-    font-weight: bold;
     color: #333;
     margin: 10px 0;
   }
