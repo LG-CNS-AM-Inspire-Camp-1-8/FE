@@ -38,7 +38,7 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
     if (newComment.trim()) {
       try {
         await api.post(`/api/comment/${newsId}`, {
-          content: newComment, // 입력된 댓글 내용
+          content: encodeURIComponent(newComment), // 입력된 댓글 내용
         });
         setNewComment(""); // 댓글 작성 후 입력창 비우기
         fetchComments(); // 댓글 목록 새로고침

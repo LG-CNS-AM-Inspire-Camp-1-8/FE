@@ -20,6 +20,12 @@ FROM nginx:alpine
 # Nginx에서 제공할 빌드된 파일을 복사
 COPY --from=build /app/dist /usr/share/nginx/html
 
+# 기본 nginx 설정 파일을 삭제한다. (custom 설정과 충돌 방지)
+RUN rm /etc/nginx/conf.d/default.conf
+
+# custom 설정파일을 컨테이너 내부로 복사한다.
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
 # Nginx 포트 80을 열어둠
 EXPOSE 80
 
