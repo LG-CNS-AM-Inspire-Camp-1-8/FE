@@ -15,7 +15,29 @@ Open API를 활용해 증권 종목 뉴스를 요약·평가하는 서비스를 
 * 25.02.24 ~ 25.02.27
 
 ##파일구조
-newsticker-front │── nginx/ # Configuration for Nginx │ ├── nginx.conf # Nginx configuration file │ │── node_modules/ # Dependencies (auto-generated) │ │── src/ # Source code │ ├── api/ # API-related functions │ ├── assets/ # Static assets (images, fonts, etc.) │ ├── components/ # Reusable React components │ ├── pages/ # Page components (React Router) │ ├── styles/ # Global and component-specific styles │ ├── App.css # Main CSS file │ ├── App.jsx # Root React component │ ├── index.css # Global styles │ ├── main.jsx # Entry point of the application │ │── .gitignore # Git ignore rules │── Dockerfile # Docker configuration for deployment │── eslint.config.js # ESLint configuration │── index.html # Main HTML file for the app │── package-lock.json # Package dependencies lockfile │── package.json # Project metadata and dependencies │── README.md # Project documentation │── vite.config.js # Vite configuration
+| NewsTickr-FrontEnd | Description |
+|------------|------------|
+| `nginx/` | Contains Nginx configuration files for deployment. |
+| ├── `nginx.conf` | Nginx configuration file. |
+| `node_modules/` | Auto-generated dependencies (not included in version control). |
+| `src/` | Source code directory. |
+| ├── `api/` | Contains API-related functions (e.g., fetching data). |
+| ├── `assets/` | Static assets such as images, fonts, and icons. |
+| ├── `components/` | Reusable React components. |
+| ├── `pages/` | Page-level React components (used in React Router). |
+| ├── `styles/` | Global styles and CSS files. |
+| ├── `App.css` | Main CSS file for global styles. |
+| ├── `App.jsx` | Root React component that serves as the entry point of the UI. |
+| ├── `index.css` | Global stylesheet for base styles. |
+| ├── `main.jsx` | Application entry point, rendering `App.jsx` into the DOM. |
+| `.gitignore` | Specifies files and folders to be ignored by Git. |
+| `Dockerfile` | Docker configuration for containerizing the application. |
+| `eslint.config.js` | ESLint configuration for code linting. |
+| `index.html` | Main HTML file that serves as the app’s base template. |
+| `package-lock.json` | Lockfile for package dependencies. |
+| `package.json` | Metadata and dependencies for the project. |
+| `README.md` | Project documentation. |
+| `vite.config.js` | Configuration file for Vite (build tool). |
  
 ### 🧑‍🤝‍🧑 맴버구성
  - 백엔드  : 곽동헌,김우영,조윤수
