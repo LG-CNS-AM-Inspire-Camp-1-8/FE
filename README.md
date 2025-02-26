@@ -16,11 +16,11 @@ AI 기반 증권 요약 및 평가 서비스
 <div align="center">
 
 | **곽동헌** | **김우영** | **김지현** | **이다빈** | **조윤수** |
-| :------: |  :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/u/106502312?v=4" height=150 width=150> <br/>](https://github.com/yeon1615) | [<img src="https://avatars.githubusercontent.com/u/112460466?v=4" height=150 width=150> <br/>](https://github.com/Cheorizzang) | [<img src="![3851f219f999360ebced068883915992-sticker](https://github.com/user-attachments/assets/aff93d97-4560-487c-bf21-ebdeff3fd424)
-" height=150 width=150> <br/>](https://github.com/heejiyang) | [<img src="https://avatars.githubusercontent.com/u/76766459?v=4" height=150 width=150> <br/> ](https://github.com/journey-ji) |
+| :------: |  :------: | :------: | :------: | :------: |
+| ![곽동헌](assets/images/a.png) | ![김우영](assets/images/b.png) | ![김지현](assets/images/c.png) | ![이다빈](assets/images/d.png) | ![조윤수](assets/images/e.png) |
 
 </div>
+
 
 <br>
 
