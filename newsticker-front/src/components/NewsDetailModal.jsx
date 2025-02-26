@@ -67,7 +67,7 @@ function NewsDetailModal({ news, onClose }) {
             onClick={() => analyzeSentiment(news.description)}
             disabled={isAnalyzing}
           >
-            "주가 영향 분석 결과 📊"
+            {isAnalyzing ? "분석 중..." : "주가 영향 분석 결과 📊"}
           </button>
           {analysisResult && <p className="analysis-text">결과: {analysisResult}</p>}
         </div>

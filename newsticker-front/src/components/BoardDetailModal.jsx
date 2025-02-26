@@ -295,7 +295,7 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 100;
 `;
 
 const HeaderContainer = styled.div`
@@ -469,19 +469,19 @@ const CloseButton = styled.button`
   background-color: #fff;
 `;
 const EditButton = styled.button`
-  margin-top: 6px;
   font-size: 13px;
   background: none;
   border: none;
   color: #007bff;
-  cursor: pointer;
+  padding : 0;
+  margin-right : 5px;
 `;
 
 const DeleteButton = styled.button`
-  margin-top: 6px;
   font-size: 13px;
   background: none;
   border: none;
   color: #007bff;
   cursor: pointer;
+  padding: 0;
 `;
