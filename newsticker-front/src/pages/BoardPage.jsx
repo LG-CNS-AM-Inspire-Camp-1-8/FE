@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import BoardFormModal from "../components/BoardDetailModal";
 import "../styles/Page.css";
-import api from "../api/axios.jsx";
+import api, {getUserId} from "../api/axios.jsx";
+import BoardDetailModal from "../components/BoardDetailModal";
+
 function BoardPage() {
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [allBoards, setAllBoards] = useState([]); 
@@ -15,9 +17,9 @@ function BoardPage() {
     const userInfo = getUserId();
     setUser(userInfo);
   };
+
   useEffect(() => {
     fetchUserFromJwt();
-    console.log(user);
     // console.log({user});
   },[]);
 
@@ -97,7 +99,7 @@ function BoardPage() {
 
       </div>
       {selectedBoard && (
-        <BoardFormModal board={selectedBoard} onClose={() => setSelectedBoard(null)} />
+          <BoardDetailModal board={selectedBoard} onClose={() => setSelectedBoard(null)} user={user} />
       )}
     </div>
   );

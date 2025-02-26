@@ -50,6 +50,32 @@ function BoardDetailModal({ board, onClose, user }) {
   };
 
   const deleteBoard = async () => {
+
+    console.log("현재 사용자 정보:", user);
+
+    const isAdmin = user?.role === "ROLE_ADMIN";
+    console.log("isAdmin 조건 결과:", isAdmin);
+
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      const deleteUrl = isAdmin
+          ? `/admin/users/news/${newsId}`  // 관리자 삭제 경로
+          : `/news/${newsId}`;  // 일반 사용자 삭제 경로
+
+      await api.delete(deleteUrl);
+      alert("게시글이 삭제되었습니다.");
+      onDelete(newsId);
+      onClose();
+    } catch (error) {
+      console.log("게시글 삭제 실패", error);
+      alert("게시글 삭제에 실패했습니다.");
+    }
+  };
+
+
+  /*
+  const deleteBoard = async () => {
     if (!window.confirm("정말 삭제하시겠습니다?")) return;
 
     try {
@@ -62,7 +88,28 @@ function BoardDetailModal({ board, onClose, user }) {
       alert("게시글 삭제에 실패했습니다.");
     }
   };
+  */
 
+  const handleDeleteComment = async (commentId, commentUserId) => {
+    try {
+      const isAdmin = user?.role === "ROLE_ADMIN";
+      console.log("isAdmin 조건 결과:", isAdmin);
+
+      const deleteUrl = isAdmin
+          ? `/admin/users/${commentUserId}/comments/${commentId}`
+          : `/api/comment/?commentId=${commentId}`;
+
+      await api.delete(deleteUrl);
+      alert("댓글이 삭제되었습니다.");
+      fetchComments(); // 댓글 목록 새로고침
+    } catch (error) {
+      console.log("댓글 삭제 실패", error);
+      alert("댓글 삭제에 실패했습니다.");
+    }
+  };
+
+
+  /*
   const handleDeleteComment = async (commentId) => {
     try {
       await api.delete(`/api/comment/?commentId=${commentId}`);
@@ -71,6 +118,7 @@ function BoardDetailModal({ board, onClose, user }) {
       console.log("댓글 삭제 실패", error);
     }
   };
+  */
   const handleEditComment = (commentId) => {
     const commentToEdit = comments.find(
       (comment) => comment.commentId === commentId
@@ -154,6 +202,15 @@ function BoardDetailModal({ board, onClose, user }) {
                   삭제
                 </DeleteButton>
               ) : null}
+
+              {(user?.id === comment.userId || user?.role === "ROLE_ADMIN") && (
+                  <DeleteButton
+                      onClick={() => handleDeleteComment(comment.commentId, comment.userId)}
+                  >
+                    삭제
+                  </DeleteButton>
+              )}
+
               {editingCommentId === comment.commentId && (
                 <Form>
                   <TextArea
