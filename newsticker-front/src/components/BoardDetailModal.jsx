@@ -10,7 +10,9 @@ function BoardDetailModal({ board, onClose, user }) {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const newsId = board.id;
   
-  
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value);
+  };
   const fetchComments = async () => {
     try {
       const response = await api.get(`/api/comment/news/${newsId}`);

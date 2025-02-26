@@ -63,23 +63,24 @@ function MyPage() {
       }
       closeImgModal();
     }
+    fetchUserInfo();
   };
+  const fetchUserInfo = async () => {
+    try {
+      const response = await api.get("/user/", { withCredentials: true });
+      // console.log(response.data.profileImg);
 
+      const { profileImg } = response.data;
+
+      console.log(profileImg);
+      setProfile(profileImg);
+      setUser(response.data);
+    } catch (error) {
+      console.error("회원 정보 조회 실패:", error);
+    }
+  };
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await api.get("/user/", { withCredentials: true });
-        // console.log(response.data.profileImg);
-
-        const { profileImg } = response.data;
-
-        console.log(profileImg);
-        setProfile(profileImg);
-        setUser(response.data);
-      } catch (error) {
-        console.error("회원 정보 조회 실패:", error);
-      }
-    };
+    
     const fetchMyPosts = async () => {
       try {
         const response = await api.get("/news/postList");
