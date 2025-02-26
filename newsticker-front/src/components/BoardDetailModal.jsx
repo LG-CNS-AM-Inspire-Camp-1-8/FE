@@ -201,7 +201,7 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
         <ContentBox>{board.description}</ContentBox>
         
         <SectionBoard>📌 내가 작성한 내용</SectionBoard>
-        <ContentBox>{board.title}</ContentBox>
+        <ContentBox>{board.content}</ContentBox>
         
         <Form>
           <TextArea
