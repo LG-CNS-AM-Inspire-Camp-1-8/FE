@@ -1,46 +1,57 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Nav.css";
-import { isAuthenticated } from "../api/axios"; // 실제 위치에 맞게 경로 수정
-import api from "../api/axios"; // 로그아웃 API 호출을 위한 예시
+import { isAuthenticated } from "../api/axios";
+import api from "../api/axios";
 
-function NavBar({ onNewsSearch, onBoardSearch}) {
+function NavBar({ onNewsSearch, onBoardSearch, resetBoardList,resetNewsList }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [auth, setAuth] = useState(false);
 
-  // 컴포넌트가 마운트될 때 로그인 상태 확인
   useEffect(() => {
     setAuth(isAuthenticated());
   }, []);
 
   /* 검색 입력 처리 */
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+const handleSearch = (e) => {
+  setSearchTerm(e.target.value);
+  
+  if (e.target.value.trim() === "") {
+    if (location.pathname === "/boardPage") {
+      resetBoardList(); // 게시판 페이지에서 검색창 비면 게시글 복구
+    } else if (location.pathname === "/") {
+      resetNewsList(); // 뉴스 페이지에서 검색창 비면 뉴스 복구
+    }
+  }
+};
 
-  /* 엔터키로 검색 실행 */
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && searchTerm.trim() !== "") {
+/* 엔터키로 검색 실행 */
+const handleKeyPress = (e) => {
+  if (e.key === "Enter") {
+    if (searchTerm.trim() !== "") {
       if (location.pathname === "/boardPage") {
-        // 게시글 검색
-        onBoardSearch(searchTerm.trim());
-      } else {
-        // 뉴스 검색
-        onNewsSearch(searchTerm.trim());
+        onBoardSearch(searchTerm.trim()); // 게시글 검색 실행
+      } else if (location.pathname === "/") {
+        onNewsSearch(searchTerm.trim()); // 🔹 뉴스 검색 실행
+      }
+    } else {
+      if (location.pathname === "/boardPage") {
+        resetBoardList(); // 게시판 페이지에서 검색 후 엔터 → 원래 게시글 목록 복구
+      } else if (location.pathname === "/") {
+        resetNewsList(); // 뉴스 페이지에서 검색 후 엔터 → 원래 뉴스 목록 복구
       }
     }
-  };
+  }
+};
 
-  /* 로그아웃 처리 (API 호출이나 쿠키 제거 로직 추가) */
+  /* 로그아웃 처리 */
   const handleLogout = async () => {
     try {
-      // 로그아웃 API가 있다면 호출합니다.
       await api.post("http://localhost:8081/NewsTickr/auth/logout");
       setAuth(false);
       navigate("/");
-      // 페이지 새로고침 등 추가 처리를 할 수 있습니다.
       window.location.reload();
     } catch (error) {
       console.error("로그아웃 오류:", error);
@@ -54,19 +65,13 @@ function NavBar({ onNewsSearch, onBoardSearch}) {
       <div className="header-center">
         <nav className="nav-toggle">
           <Link to="/">
-            <button className={location.pathname === "/" ? "active" : ""}>
-              뉴스페이지
-            </button>
+            <button className={location.pathname === "/" ? "active" : ""}>뉴스페이지</button>
           </Link>
           <Link to="/boardPage">
-            <button className={location.pathname === "/boardPage" ? "active" : ""}>
-              게시글 목록
-            </button>
+            <button className={location.pathname === "/boardPage" ? "active" : ""}>게시글 목록</button>
           </Link>
           <Link to="/mypage">
-            <button className={location.pathname === "/mypage" ? "active" : ""}>
-              마이페이지
-            </button>
+            <button className={location.pathname === "/mypage" ? "active" : ""}>마이페이지</button>
           </Link>
         </nav>
         <div className="search-bar">
@@ -84,9 +89,7 @@ function NavBar({ onNewsSearch, onBoardSearch}) {
 
       {location.pathname !== "/mypage" && (
         auth ? (
-          <button onClick={handleLogout} className="login-btn">
-            로그아웃
-          </button>
+          <button onClick={handleLogout} className="login-btn">로그아웃</button>
         ) : (
           <Link to="/login">
             <button className="login-btn">로그인</button>

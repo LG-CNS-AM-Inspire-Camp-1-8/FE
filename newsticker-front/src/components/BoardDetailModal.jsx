@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import api from "../api/axios.jsx";
 
-function BoardDetailModal({ board, onClose, user }) {
+function BoardDetailModal({ board, onClose, onDelete,user }) {
   if (!board) return null;
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -10,14 +10,12 @@ function BoardDetailModal({ board, onClose, user }) {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const newsId = board.id;
   
-  const handleCommentChange = (e) => {
-    setNewComment(e.target.value);
-  };
+  
   const fetchComments = async () => {
     try {
       const response = await api.get(`/api/comment/news/${newsId}`);
       // 댓글 목록에 isReplyVisible을 각 댓글에 추가
-      const commentsWithReplies = response.data.map(comment => ({
+      const commentsWithReplies = response.data.map((comment) => ({
         ...comment,
         isReplyVisible: false, // 초기값은 false
       }));
@@ -26,12 +24,11 @@ function BoardDetailModal({ board, onClose, user }) {
       console.log("댓글 조회 실패", error);
     }
   };
-  
+
   useEffect(() => {
     if (newsId) {
       fetchComments();
     }
-    
   }, [newsId]);
 
   const handleSubmit = async () => {
@@ -49,7 +46,36 @@ function BoardDetailModal({ board, onClose, user }) {
       alert("댓글 내용을 입력해주세요.");
     }
   };
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value);
+  };
 
+  const deleteBoard = async () => {
+
+    console.log("현재 사용자 정보:", user);
+
+    const isAdmin = user?.role === "ROLE_ADMIN";
+    console.log("isAdmin 조건 결과:", isAdmin);
+
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      const deleteUrl = isAdmin
+          ? `/admin/users/news/${newsId}`  // 관리자 삭제 경로
+          : `/news/${newsId}`;  // 일반 사용자 삭제 경로
+
+      await api.delete(deleteUrl);
+      alert("게시글이 삭제되었습니다.");
+      onDelete(newsId);
+      onClose();
+    } catch (error) {
+      console.log("게시글 삭제 실패", error);
+      alert("게시글 삭제에 실패했습니다.");
+    }
+  };
+
+
+  /*
   const deleteBoard = async () => {
     if (!window.confirm("정말 삭제하시겠습니다?")) return;
 
@@ -63,19 +89,43 @@ function BoardDetailModal({ board, onClose, user }) {
       alert("게시글 삭제에 실패했습니다.");
     }
   };
+  */
 
+  const handleDeleteComment = async (commentId, commentUserId) => {
+    try {
+      const isAdmin = user?.role === "ROLE_ADMIN";
+      console.log("isAdmin 조건 결과:", isAdmin);
+
+      const deleteUrl = isAdmin
+          ? `/admin/users/${commentUserId}/comments/${commentId}`
+          : `/api/comment/?commentId=${commentId}`;
+
+      await api.delete(deleteUrl);
+      alert("댓글이 삭제되었습니다.");
+      fetchComments(); // 댓글 목록 새로고침
+    } catch (error) {
+      console.log("댓글 삭제 실패", error);
+      alert("댓글 삭제에 실패했습니다.");
+    }
+  };
+
+
+  /*
   const handleDeleteComment = async (commentId) => {
-    try{
+    try {
       await api.delete(`/api/comment/?commentId=${commentId}`);
       fetchComments();
-    }catch(error){
+    } catch (error) {
       console.log("댓글 삭제 실패", error);
     }
   };
+  */
   const handleEditComment = (commentId) => {
-    const commentToEdit = comments.find(comment => comment.commentId === commentId);
-    setEditingCommentId(commentId);  // 현재 수정 중인 댓글 ID 설정
-    setEditedComment(decodeURIComponent(commentToEdit.content));  // 수정할 댓글 내용 설정
+    const commentToEdit = comments.find(
+      (comment) => comment.commentId === commentId
+    );
+    setEditingCommentId(commentId); // 현재 수정 중인 댓글 ID 설정
+    setEditedComment(decodeURIComponent(commentToEdit.content)); // 수정할 댓글 내용 설정
   };
   const handleUpdateComment = async () => {
     if (editedComment.trim()) {
@@ -83,9 +133,9 @@ function BoardDetailModal({ board, onClose, user }) {
         await api.post(`/api/comment/?commentId=${editingCommentId}`, {
           content: editedComment,
         });
-        setEditedComment("");  // 수정 후 입력창 비우기
-        setEditingCommentId(null);  // 수정 모드 종료
-        fetchComments();  // 댓글 목록 새로고침
+        setEditedComment(""); // 수정 후 입력창 비우기
+        setEditingCommentId(null); // 수정 모드 종료
+        fetchComments(); // 댓글 목록 새로고침
       } catch (error) {
         console.log("댓글 수정 실패", error);
       }
@@ -95,13 +145,14 @@ function BoardDetailModal({ board, onClose, user }) {
   };
 
   const toggleReplyVisibility = (commentId) => {
-    setComments(prevComments =>
-      prevComments.map(comment =>
-        comment.commentId === commentId ? { ...comment, isReplyVisible: !comment.isReplyVisible }
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.commentId === commentId
+          ? { ...comment, isReplyVisible: !comment.isReplyVisible }
           : comment
       )
     );
-    console.log(comments)
+    console.log(comments);
   };
 
   return (
@@ -115,12 +166,17 @@ function BoardDetailModal({ board, onClose, user }) {
         <SubInfo>{board.userName}</SubInfo>
 
         <AnalysisButton>"감정 분석 결과 📊"</AnalysisButton>
+        <ContentBox>{board.analysis}</ContentBox>
 
         <SectionTitle>기사 본문 요약</SectionTitle>
-        <ContentBox>{board.content}</ContentBox>
+        <ContentBox>{board.description}</ContentBox>
 
         <Form>
-          <TextArea placeholder="댓글을 남겨주세요" value={newComment} onChange={handleCommentChange} />
+          <TextArea
+            placeholder="댓글을 남겨주세요"
+            value={newComment}
+            onChange={handleCommentChange}
+          />
           <SubmitButton type="button" onClick={handleSubmit}>
             등록하기
           </SubmitButton>
@@ -132,15 +188,30 @@ function BoardDetailModal({ board, onClose, user }) {
             <Comment key={comment.commentId}>
               <CommentAuthor>{comment.username}</CommentAuthor>
               <CommentText>{decodeURIComponent(comment.content)}</CommentText>
-              
-              { user?.id == comment.userId ? 
-              <EditButton onClick={() => handleEditComment(comment.commentId)}>수정</EditButton>
-               : null
-              }
-              { user?.id == comment.userId ?
-                <DeleteButton onClick={() => handleDeleteComment(comment.commentId)}>삭제</DeleteButton>
-                : null
-              }
+
+              {user?.id == comment.userId ? (
+                <EditButton
+                  onClick={() => handleEditComment(comment.commentId)}
+                >
+                  수정
+                </EditButton>
+              ) : null}
+              {user?.id == comment.userId ? (
+                <DeleteButton
+                  onClick={() => handleDeleteComment(comment.commentId)}
+                >
+                  삭제
+                </DeleteButton>
+              ) : null}
+
+              {(user?.id === comment.userId || user?.role === "ROLE_ADMIN") && (
+                  <DeleteButton
+                      onClick={() => handleDeleteComment(comment.commentId, comment.userId)}
+                  >
+                    삭제
+                  </DeleteButton>
+              )}
+
               {editingCommentId === comment.commentId && (
                 <Form>
                   <TextArea
@@ -153,7 +224,7 @@ function BoardDetailModal({ board, onClose, user }) {
                   </SubmitButton>
                 </Form>
               )}
-              
+
               {/* <ToggleReplyButton onClick={() => toggleReplyVisibility(comment.commentId)}>
                 {comment.isReplyVisible ? "Hide Replies" : "Show Replies"}
               </ToggleReplyButton> */}
@@ -242,8 +313,8 @@ const Badge = styled.button`
   border-radius: 6px;
   border: none;
   cursor: pointer;
+  margin-top: 32px;
 `;
-
 const AnalysisButton = styled.button`
   background-color: #dfe8ff;
   color: #304ffe;
@@ -297,7 +368,7 @@ const TextArea = styled.textarea`
 const SubmitButton = styled.button`
   margin-top: 10px;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #a62639;
   color: white;
   font-size: 14px;
   border: none;
@@ -366,7 +437,7 @@ const EditButton = styled.button`
 `;
 
 const DeleteButton = styled.button`
-margin-top: 6px;
+  margin-top: 6px;
   font-size: 13px;
   background: none;
   border: none;

@@ -91,8 +91,14 @@
   }
   .userprofile {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 10px;
+  }  
+  .userprofile .name{
+    margin-top: 1.5px;
+    font-size: 15px;
+    color: #333d4b;
+    font-weight: bold;
   }
   .userprofile img{
     width: 20px; height: 20px;
