@@ -11,6 +11,19 @@ AI 기반 증권 요약 및 평가 서비스
 
 <br>
 
+## 팀원 구성
+
+<div align="center">
+
+| **곽동헌** | **김우영** | **김지현** | **이다빈** | **조윤수** |
+| :------: |  :------: | :------: | :------: |
+| [<img src="https://avatars.githubusercontent.com/u/106502312?v=4" height=150 width=150> <br/>](https://github.com/yeon1615) | [<img src="https://avatars.githubusercontent.com/u/112460466?v=4" height=150 width=150> <br/>](https://github.com/Cheorizzang) | [<img src="![3851f219f999360ebced068883915992-sticker](https://github.com/user-attachments/assets/aff93d97-4560-487c-bf21-ebdeff3fd424)
+" height=150 width=150> <br/>](https://github.com/heejiyang) | [<img src="https://avatars.githubusercontent.com/u/76766459?v=4" height=150 width=150> <br/> ](https://github.com/journey-ji) |
+
+</div>
+
+<br>
+
 ## 🕰️ 개발 기간
 * 25.02.24 ~ 25.02.27
 
