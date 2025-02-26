@@ -20,6 +20,7 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
       // 댓글 목록에 isReplyVisible을 각 댓글에 추가
       const commentsWithReplies = response.data.map((comment) => ({
         ...comment,
+        content: comment.content.replace(/\+/g, " "), // 띄어쓰기 변환
         isReplyVisible: false, // 초기값은 false
       }));
       setComments(commentsWithReplies);
@@ -38,7 +39,7 @@ function BoardDetailModal({ board, onClose, onDelete,user }) {
     if (newComment.trim()) {
       try {
         await api.post(`/api/comment/${newsId}`, {
-          content: encodeURIComponent(newComment), // 입력된 댓글 내용
+          content: newComment, // 입력된 댓글 내용
         });
         setNewComment(""); // 댓글 작성 후 입력창 비우기
         fetchComments(); // 댓글 목록 새로고침
