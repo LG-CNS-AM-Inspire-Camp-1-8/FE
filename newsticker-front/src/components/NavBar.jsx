@@ -10,8 +10,13 @@ function NavBar({ onNewsSearch, onBoardSearch, resetBoardList,resetNewsList }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [auth, setAuth] = useState(false);
 
+  const fetchAuthFromJwt = async () => {
+    const isAuth = isAuthenticated();
+    setAuth(isAuth);
+    console.log(isAuth);
+  };
   useEffect(() => {
-    setAuth(isAuthenticated());
+    fetchAuthFromJwt();
   }, []);
 
   /* 검색 입력 처리 */
