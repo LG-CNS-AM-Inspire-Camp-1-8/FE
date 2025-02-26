@@ -104,7 +104,7 @@ AI 기반 증권 요약 및 평가 서비스
 백엔드: Spring Boot (뉴스 API, 댓글 관리, Open API 연동)
 데이터베이스: MySQL
 배포: Docker, Docker Hub, docker - compose
-AI: OpenAI API (기사 요약 및 평가 )
+AI: Groq API (기사 요약 및 평가 )
 
 <br>
 
@@ -121,7 +121,7 @@ AI: OpenAI API (기사 요약 및 평가 )
 <br>
 
 #### 마이 페이지
-- 사진병경
+- 사진변경
 - 사진 다운로드
 - 로그인 하면 나의 이미지와 내 이메일이 보여진다
 - 로그인 하면 내가 작성한 글 보이기
@@ -154,7 +154,7 @@ AI: OpenAI API (기사 요약 및 평가 )
 <br>
 
 #### 뉴스 모달 페이지
-- 주가 영향 분석 결과 api
+- 주가 영향 분석 결과 api 
 - 기사 본문 요약 api
 - 원본뉴스로 이동
 - 게시글 작성 (로그인하지 않으면 로그인 확인 alert창)
